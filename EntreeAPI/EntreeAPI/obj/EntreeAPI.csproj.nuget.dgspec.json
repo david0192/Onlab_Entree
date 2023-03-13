@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\bme_6felev\\Onlab\\EntreeAPI\\EntreeAPI\\EntreeAPI.csproj": {}
+    "C:\\bme_6felev\\Onlab\\Onlab_Entree\\EntreeAPI\\EntreeAPI\\EntreeAPI.csproj": {}
   },
   "projects": {
-    "C:\\bme_6felev\\Onlab\\EntreeAPI\\EntreeAPI\\EntreeAPI.csproj": {
+    "C:\\bme_6felev\\Onlab\\Onlab_Entree\\EntreeAPI\\EntreeAPI\\EntreeAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\bme_6felev\\Onlab\\EntreeAPI\\EntreeAPI\\EntreeAPI.csproj",
+        "projectUniqueName": "C:\\bme_6felev\\Onlab\\Onlab_Entree\\EntreeAPI\\EntreeAPI\\EntreeAPI.csproj",
         "projectName": "EntreeAPI",
-        "projectPath": "C:\\bme_6felev\\Onlab\\EntreeAPI\\EntreeAPI\\EntreeAPI.csproj",
+        "projectPath": "C:\\bme_6felev\\Onlab\\Onlab_Entree\\EntreeAPI\\EntreeAPI\\EntreeAPI.csproj",
         "packagesPath": "C:\\Users\\Felhasználó\\.nuget\\packages\\",
-        "outputPath": "C:\\bme_6felev\\Onlab\\EntreeAPI\\EntreeAPI\\obj\\",
+        "outputPath": "C:\\bme_6felev\\Onlab\\Onlab_Entree\\EntreeAPI\\EntreeAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Felhasználó\\AppData\\Roaming\\NuGet\\NuGet.Config",

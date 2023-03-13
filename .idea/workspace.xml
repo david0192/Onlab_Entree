@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f21770c8-3e62-481d-960b-ef8656cc8f06" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/EntreeAPI/.vs/EntreeAPI/DesignTimeBuild/.dtbcache.v2" beforeDir="false" afterPath="$PROJECT_DIR$/EntreeAPI/.vs/EntreeAPI/DesignTimeBuild/.dtbcache.v2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EntreeAPI/.vs/EntreeAPI/FileContentIndex/19dec466-8d0f-416d-ba67-c9b25a3b405d.vsidx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/EntreeAPI/.vs/EntreeAPI/FileContentIndex/5971f8e2-5fbf-46e7-91d7-cbeb8efe0848.vsidx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/EntreeAPI/.vs/EntreeAPI/FileContentIndex/df61991c-36a7-4015-b887-56a57dad2f8a.vsidx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/EntreeAPI/.vs/EntreeAPI/FileContentIndex/fb68a40a-d75f-4a43-bb4c-1971c1f6df24.vsidx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/EntreeAPI/.vs/EntreeAPI/v17/.futdcache.v2" beforeDir="false" afterPath="$PROJECT_DIR$/EntreeAPI/.vs/EntreeAPI/v17/.futdcache.v2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EntreeAPI/.vs/EntreeAPI/v17/.suo" beforeDir="false" afterPath="$PROJECT_DIR$/EntreeAPI/.vs/EntreeAPI/v17/.suo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EntreeAPI/.vs/EntreeAPI/v17/.wsuo" beforeDir="false" afterPath="$PROJECT_DIR$/EntreeAPI/.vs/EntreeAPI/v17/.wsuo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EntreeAPI/.vs/ProjectEvaluation/entreeapi.metadata.v6.1" beforeDir="false" afterPath="$PROJECT_DIR$/EntreeAPI/.vs/ProjectEvaluation/entreeapi.metadata.v6.1" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EntreeAPI/.vs/ProjectEvaluation/entreeapi.projects.v6.1" beforeDir="false" afterPath="$PROJECT_DIR$/EntreeAPI/.vs/ProjectEvaluation/entreeapi.projects.v6.1" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EntreeAPI/.vs/VSWorkspaceState.json" beforeDir="false" afterPath="$PROJECT_DIR$/EntreeAPI/.vs/VSWorkspaceState.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EntreeAPI/.vs/slnx.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/EntreeAPI/.vs/slnx.sqlite" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EntreeAPI/EntreeAPI/Models/SportFacilityDTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EntreeAPI/EntreeAPI/Models/SportFacilityDTO.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EntreeAPI/EntreeAPI/bin/Debug/net6.0/EntreeAPI.dll" beforeDir="false" afterPath="$PROJECT_DIR$/EntreeAPI/EntreeAPI/bin/Debug/net6.0/EntreeAPI.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EntreeAPI/EntreeAPI/bin/Debug/net6.0/EntreeAPI.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/EntreeAPI/EntreeAPI/bin/Debug/net6.0/EntreeAPI.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EntreeAPI/EntreeAPI/obj/Debug/net6.0/EntreeAPI.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/EntreeAPI/EntreeAPI/obj/Debug/net6.0/EntreeAPI.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EntreeAPI/EntreeAPI/obj/Debug/net6.0/EntreeAPI.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/EntreeAPI/EntreeAPI/obj/Debug/net6.0/EntreeAPI.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EntreeAPI/EntreeAPI/obj/Debug/net6.0/EntreeAPI.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/EntreeAPI/EntreeAPI/obj/Debug/net6.0/EntreeAPI.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EntreeAPI/EntreeAPI/obj/Debug/net6.0/EntreeAPI.dll" beforeDir="false" afterPath="$PROJECT_DIR$/EntreeAPI/EntreeAPI/obj/Debug/net6.0/EntreeAPI.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EntreeAPI/EntreeAPI/obj/Debug/net6.0/EntreeAPI.genruntimeconfig.cache" beforeDir="false" afterPath="$PROJECT_DIR$/EntreeAPI/EntreeAPI/obj/Debug/net6.0/EntreeAPI.genruntimeconfig.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EntreeAPI/EntreeAPI/obj/Debug/net6.0/EntreeAPI.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/EntreeAPI/EntreeAPI/obj/Debug/net6.0/EntreeAPI.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EntreeAPI/EntreeAPI/obj/Debug/net6.0/ref/EntreeAPI.dll" beforeDir="false" afterPath="$PROJECT_DIR$/EntreeAPI/EntreeAPI/obj/Debug/net6.0/ref/EntreeAPI.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EntreeAPI/EntreeAPI/obj/Debug/net6.0/refint/EntreeAPI.dll" beforeDir="false" afterPath="$PROJECT_DIR$/EntreeAPI/EntreeAPI/obj/Debug/net6.0/refint/EntreeAPI.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EntreeAPI/EntreeAPI/obj/EntreeAPI.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/EntreeAPI/EntreeAPI/obj/EntreeAPI.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EntreeAPI/EntreeAPI/obj/Release/net6.0/EntreeAPI.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/EntreeAPI/EntreeAPI/obj/Release/net6.0/EntreeAPI.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EntreeAPI/EntreeAPI/obj/Release/net6.0/EntreeAPI.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/EntreeAPI/EntreeAPI/obj/Release/net6.0/EntreeAPI.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EntreeAPI/EntreeAPI/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/EntreeAPI/EntreeAPI/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EntreeAPI/EntreeAPI/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/EntreeAPI/EntreeAPI/obj/project.nuget.cache" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="2MhCsTq3Kt5fbST5TUjONOz06MK" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "cidr.known.project.marker": "true",
+    "last_opened_file_path": "C:/bme_6felev/Onlab/Onlab_Entree",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f21770c8-3e62-481d-960b-ef8656cc8f06" name="Changes" comment="" />
+      <created>1678210639257</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1678210639257</updated>
+    </task>
+    <servers />
+  </component>
+</project>

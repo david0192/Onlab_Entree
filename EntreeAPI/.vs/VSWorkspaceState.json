@@ -2,8 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\EntreeAPI",
-    "\\EntreeAPI\\Migrations"
+    "\\EntreeAPI\\Entities",
+    "\\EntreeAPI\\Migrations",
+    "\\EntreeAPI\\Models"
   ],
-  "SelectedNode": "\\EntreeAPI.sln",
+  "SelectedNode": "\\EntreeAPI\\Models\\UserDTO.cs",
   "PreviewInSolutionExplorer": false
 }

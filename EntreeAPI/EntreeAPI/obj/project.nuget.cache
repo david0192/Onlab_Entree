@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "00ADkBFosfmhwLjWoVKrvchvOMJ2iuM0f4gYn/GY26HaixiRzz9NSMPj9+ROazChBnSZmfg40zOUzeNxJrssJw==",
+  "dgSpecHash": "WpM5ETqSa5NYJZtoe7+Gv73Xhx440/k+5vf9DTCNVhC8ENjPRhyuWIh0b+ENoydEK++Haw19lRIikbAQC9cfOg==",
   "success": true,
-  "projectFilePath": "C:\\bme_6felev\\Onlab\\EntreeAPI\\EntreeAPI\\EntreeAPI.csproj",
+  "projectFilePath": "C:\\bme_6felev\\Onlab\\Onlab_Entree\\EntreeAPI\\EntreeAPI\\EntreeAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Felhasználó\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\Felhasználó\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.0\\automapper.extensions.microsoft.dependencyinjection.12.0.0.nupkg.sha512",
