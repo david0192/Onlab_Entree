@@ -10,6 +10,8 @@ namespace EntreeAPI
         public AutoMapperProfile()
         {
             CreateMap<User, UserDTO>();
+            CreateMap<SportFacility, SportFacilityDTO>();
+            CreateMap<TicketType, TicketTypeDTO>();
         }
     }
 }

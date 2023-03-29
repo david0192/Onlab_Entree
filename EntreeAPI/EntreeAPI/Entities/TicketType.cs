@@ -14,5 +14,9 @@ namespace EntreeAPI.Entities
         public int SportFascilityId { get; set; }
 
         public SportFacility SportFacility { get; set; }
+
+        public int CategoryId { get; set; }
+
+        public TicketCategory Category { get; set; }
     }
 }

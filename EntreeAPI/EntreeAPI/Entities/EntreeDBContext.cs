@@ -37,6 +37,7 @@ namespace EntreeAPI.Entities
             modelBuilder.Entity<GroupClass>().HasOne(g => g.SportFacility).WithMany(s => s.GroupClasses).HasForeignKey(g => g.SportFacilityId);
             modelBuilder.Entity<TrainerDate>().HasOne(t => t.Trainer).WithMany(t => t.TrainerDates).HasForeignKey(t => t.TrainerId);
             modelBuilder.Entity<Trainer>().HasOne(t => t.SportFacility).WithMany(s => s.Trainers).HasForeignKey(t => t.SportFacilityId);
+            modelBuilder.Entity<TicketType>().HasOne(t => t.Category);
 
             modelBuilder.Entity<Admin>(entity =>
             {
