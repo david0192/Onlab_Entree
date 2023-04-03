@@ -22,7 +22,7 @@ data class TicketType(
     var price:Int
 )
 
-const val BASE_URL = "http://10.50.50.112:7111/api/"
+const val BASE_URL = "http://192.168.0.21:7111/api/"
 
 interface APIService {
     @GET("users")
