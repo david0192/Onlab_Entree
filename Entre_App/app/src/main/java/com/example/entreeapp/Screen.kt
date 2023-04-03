@@ -6,5 +6,10 @@ sealed class Screen(val route:String){
     object Home:Screen(route="home_sportfacilities")
     object Profile:Screen(route="profile")
     object Detail:Screen(route="sportfacility_details/{$SPORT_DETAIL_ARGUMENT_KEY}")
+    object SignIn: Screen("SIGN_IN_SCREEN")
+    object ForgotPassword: Screen("FORGOT_PASSWORD_SCREEN")
+    object SignUp: Screen("SIGN_UP_SCREEN")
+    object VerifyEmail: Screen("VERIFY_EMAIL_SCREEN")
+
 
 }

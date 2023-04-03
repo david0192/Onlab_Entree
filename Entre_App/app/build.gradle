@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -69,6 +70,23 @@ dependencies {
     def nav_version = "2.5.3"
 
     implementation "androidx.navigation:navigation-compose:$nav_version"
+    implementation platform('com.google.firebase:firebase-bom:31.3.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+
+    //Compose
+    implementation platform("androidx.compose:compose-bom:$compose_bom_version")
+    implementation "androidx.compose.material:material"
+    implementation "androidx.compose.material:material-icons-extended"
+    //Hilt
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    annotationProcessor "com.google.dagger:hilt-android-compiler:$hilt_version"
+    //Hilt Navigation Compose
+    implementation "androidx.hilt:hilt-navigation-compose:$hilt_navigation_compose_version"
+    //Firebase
+    implementation platform("com.google.firebase:firebase-bom:$firebase_bom_version")
+    implementation "com.google.firebase:firebase-auth-ktx"
+    //Accompanist
+    implementation "com.google.accompanist:accompanist-navigation-animation:$accompanist_version"
 
 
 

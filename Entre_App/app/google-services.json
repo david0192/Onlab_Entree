@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "408228928159",
+    "project_id": "entree-3178f",
+    "storage_bucket": "entree-3178f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:408228928159:android:2ddaf0d1fecc3dcc54e0aa",
+        "android_client_info": {
+          "package_name": "com.example.entreeapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "408228928159-c2re6llfl80qs2vgrn3dga27iikcmvrv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChLxKlYaDydzU3DOBBwOFgMBqfHuUcxgY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "408228928159-c2re6llfl80qs2vgrn3dga27iikcmvrv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
