@@ -109,11 +109,11 @@ class MainActivity : ComponentActivity() {
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun HomeScreen(navcontroller: NavHostController, sportFacilityViewModel: SportFacilityViewModel, ticketTypeViewModel: TicketTypeViewModel){
+fun HomeScreen(navcontroller: NavHostController, sportFacilityViewModel: SportFacilityViewModel, ticketTypeViewModel: TicketTypeViewModel, userViewModel: UserViewModel){
     Scaffold(bottomBar = {
         BottomBar(navController=navcontroller)
     }) {
-        SetUpNavGraph(navController = navcontroller, spfvm= sportFacilityViewModel, ttvm= ticketTypeViewModel)
+        SetUpNavGraph(navController = navcontroller, spfvm= sportFacilityViewModel, ttvm= ticketTypeViewModel, uvm=userViewModel)
     }
 }
 

@@ -6,6 +6,5 @@ namespace EntreeAPI.Models
     {
         public string TypeName { get; set; }
 
-
     }
 }

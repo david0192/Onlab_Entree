@@ -1,15 +1,19 @@
 package ro.alexmamo.firebasesigninwithemailandpassword.navigation
 
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.launch
 import ro.alexmamo.firebasesigninwithemailandpassword.myapplication.SportFacilityViewModel
 import ro.alexmamo.firebasesigninwithemailandpassword.myapplication.TicketTypeViewModel
 import ro.alexmamo.firebasesigninwithemailandpassword.myapplication.User
@@ -73,10 +77,10 @@ fun NavGraph(
         ) {
             VerifyEmailScreen(
                 navigateToProfileScreen = {
-                    val adduser:User=User(email="pdatv67@gmail.com" , role="Guest", passwordhash = "kjfkjfjdl84")
+                    val adduser:User=User(email=FirebaseAuth.getInstance().currentUser?.email , role="Guest")
 
 
-                    suspend { uvm.addGuestUser(adduser)}
+                     uvm.addGuestUser(adduser)
                     navController.navigate(ProfileScreen.route) {
                         popUpTo(navController.graph.id) {
                             inclusive = true
@@ -88,7 +92,7 @@ fun NavGraph(
         composable(
             route = ProfileScreen.route
         ) {
-            HomeScreen(navcontroller = rememberNavController(), sportFacilityViewModel = spfvm, ticketTypeViewModel = ttvm)
+            HomeScreen(navcontroller = rememberNavController(), sportFacilityViewModel = spfvm, ticketTypeViewModel = ttvm, userViewModel = uvm)
         }
     }
 }

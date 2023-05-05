@@ -8,9 +8,6 @@ namespace EntreeAPI.Models
         public string Email { get; set; }
 
         [Required]
-        public string PasswordHash { get; set; }
-
-        [Required]
         public string Role { get; set; }
     }
 }

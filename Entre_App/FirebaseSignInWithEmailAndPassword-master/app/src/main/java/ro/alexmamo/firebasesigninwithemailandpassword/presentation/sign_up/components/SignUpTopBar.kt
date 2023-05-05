@@ -3,6 +3,7 @@ package ro.alexmamo.firebasesigninwithemailandpassword.presentation.sign_up.comp
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import ro.alexmamo.firebasesigninwithemailandpassword.components.BackIcon
 import ro.alexmamo.firebasesigninwithemailandpassword.core.Constants.SIGN_UP_SCREEN
 
@@ -13,9 +14,10 @@ fun SignUpTopBar(
     TopAppBar (
         title = {
             Text(
-                text = SIGN_UP_SCREEN
+                text = SIGN_UP_SCREEN, color=Color.White
             )
         },
+        backgroundColor = Color.DarkGray,
         navigationIcon = {
             BackIcon(
                 navigateBack = navigateBack

@@ -15,7 +15,8 @@ import ro.alexmamo.firebasesigninwithemailandpassword.presentation.SportFacility
 fun SetUpNavGraph(
     navController: NavHostController,
      ttvm:TicketTypeViewModel,
-    spfvm:SportFacilityViewModel
+    spfvm:SportFacilityViewModel,
+    uvm:UserViewModel
 ){
     NavHost(
         navController = navController,
@@ -30,7 +31,7 @@ fun SetUpNavGraph(
         composable(
             route=Screen.Profile.route,
         ){
-            MyProfile()
+            MyProfile(ticketTypeViewModel = ttvm)
         }
 
         composable(

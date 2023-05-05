@@ -9,9 +9,6 @@ import kotlinx.coroutines.launch
 class UserViewModel : ViewModel() {
     private val _userList = mutableStateListOf<User>()
     var errorMessage: String by mutableStateOf("")
-    private var _addeduser= mutableStateOf<User>(User(email = "", role="", passwordhash = ""))
-    val addedUser: MutableState<User>
-        get()=_addeduser
     val userList: List<User>
         get() = _userList
 
@@ -28,11 +25,12 @@ class UserViewModel : ViewModel() {
         }
     }
 
-    suspend fun addGuestUser(user:User){
+     fun addGuestUser(user:User){
         val apiService = APIService.getInstance()
         try {
-            _addeduser=apiService.AddGuestUser(user)
-
+            viewModelScope.launch {
+                apiService.AddGuestUser(user)
+            }
         } catch (e: Exception) {
             errorMessage = e.message.toString()
         }

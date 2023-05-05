@@ -30,5 +30,38 @@ namespace EntreeAPI.Controllers
 
             return Ok(tickettypes);
         }
+
+        [Route("api/tickets/{email}")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<TicketDTO>>> GetTicketsByEmail(string email)
+        {
+            var userquery = await _context.Users.Where(u => u.Email == email).Include(u=>u.Guest).FirstOrDefaultAsync();
+
+            if (userquery == null)
+            {
+                return null;
+            }
+            else
+            {
+                if (userquery.Role != "Guest")
+                {
+                    return null;
+                }
+                else
+                {
+                    if (userquery.Guest == null)
+                    {
+                        throw new ArgumentException("Guest nem lehet null!");
+                    }
+                    else
+                    {
+                        var guestId = userquery.Guest.Id;
+                        var ticketlistquery= await _mapper.ProjectTo<TicketDTO>(_context.Tickets.Where(t => t.GuestId == guestId)).ToListAsync();
+                        return Ok(ticketlistquery);
+                    }
+                }
+            }
+                
+        }
     }
 }

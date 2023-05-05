@@ -4,6 +4,7 @@ using EntreeAPI.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EntreeAPI.Migrations
 {
     [DbContext(typeof(EntreeDBContext))]
-    partial class EntreeDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230501155449_gusetchange")]
+    partial class gusetchange
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -160,13 +162,12 @@ namespace EntreeAPI.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("userId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("userId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("Guests");
                 });
@@ -380,8 +381,8 @@ namespace EntreeAPI.Migrations
             modelBuilder.Entity("EntreeAPI.Entities.Guest", b =>
                 {
                     b.HasOne("EntreeAPI.Entities.User", "User")
-                        .WithOne("Guest")
-                        .HasForeignKey("EntreeAPI.Entities.Guest", "userId")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -470,12 +471,6 @@ namespace EntreeAPI.Migrations
             modelBuilder.Entity("EntreeAPI.Entities.Trainer", b =>
                 {
                     b.Navigation("TrainerDates");
-                });
-
-            modelBuilder.Entity("EntreeAPI.Entities.User", b =>
-                {
-                    b.Navigation("Guest")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -11,9 +11,9 @@ namespace EntreeAPI.Entities
         public string Email { get; set; }
 
         [Required]
-        public string PasswordHash { get; set; }
-
-        [Required]
         public string Role { get; set; }
+
+        public Guest Guest { get; set; }
+
     }
 }

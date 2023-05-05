@@ -15,6 +15,7 @@ class TicketTypeViewModel : ViewModel() {
     private val _ticketTypeListMonthly = mutableStateListOf<TicketType>()
     private val _ticketTypeListGroup = mutableStateListOf<TicketType>()
     private val _ticketTypeListTrainer = mutableStateListOf<TicketType>()
+    private val _ticketsOfGuest= mutableStateListOf<Ticket>()
     var errorMessage: String by mutableStateOf("")
     val ticketTypeList_Daily: List<TicketType>
         get() = _ticketTypeListDaily
@@ -24,6 +25,8 @@ class TicketTypeViewModel : ViewModel() {
         get() = _ticketTypeListGroup
     val ticketTypeList_Trainer: List<TicketType>
         get() = _ticketTypeListTrainer
+    val ticketsofGuest:List<Ticket>
+        get()=_ticketsOfGuest
 
     fun getTicketTypeList(id:Int?) {
         viewModelScope.launch {
@@ -37,6 +40,19 @@ class TicketTypeViewModel : ViewModel() {
                 _ticketTypeListGroup.addAll(apiService.getSportFacilitiesByIdCatId(id, 3))
                 _ticketTypeListTrainer.clear()
                 _ticketTypeListTrainer.addAll(apiService.getSportFacilitiesByIdCatId(id, 4))
+            } catch (e: Exception) {
+                errorMessage = e.message.toString()
+            }
+        }
+    }
+
+    fun getTicketsByEmail(email:String?){
+        viewModelScope.launch {
+            val apiService = APIService.getInstance()
+            try {
+                _ticketsOfGuest.clear()
+                _ticketsOfGuest.addAll(apiService.getTicketsByEmail(email))
+
             } catch (e: Exception) {
                 errorMessage = e.message.toString()
             }
