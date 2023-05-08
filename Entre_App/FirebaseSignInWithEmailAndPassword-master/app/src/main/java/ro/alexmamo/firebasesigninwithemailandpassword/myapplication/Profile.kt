@@ -130,9 +130,9 @@ private fun CreateInfo(ticketTypeViewModel: TicketTypeViewModel) {
                                 ) {
                                     Row() {
                                         Column(modifier = Modifier.weight(1f)) {
-                                            if(ticket.typename!=null){
+                                            if(ticket.typeName!=null){
                                                 Text(
-                                                    text=ticket.typename as String,
+                                                    text=ticket.typeName as String,
                                                     maxLines = 1,
                                                     overflow = TextOverflow.Ellipsis,
                                                     )

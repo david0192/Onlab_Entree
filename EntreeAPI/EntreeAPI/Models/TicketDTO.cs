@@ -4,7 +4,7 @@ namespace EntreeAPI.Models
 {
     public class TicketDTO
     {
-        public string TypeName { get; set; }
+        public string? TypeName { get; set; }
 
     }
 }
