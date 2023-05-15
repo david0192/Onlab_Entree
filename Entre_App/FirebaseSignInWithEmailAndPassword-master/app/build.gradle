@@ -6,6 +6,8 @@ plugins {
     id "dagger.hilt.android.plugin"
 }
 
+apply plugin: 'com.android.application'
+
 android {
     namespace 'ro.alexmamo.firebasesigninwithemailandpassword'
     compileSdk 33
@@ -64,4 +66,9 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:2.0.0"
 
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1'
+
+    implementation 'com.razorpay:checkout:1.6.30'
+
+    implementation 'androidx.appcompat:appcompat:1.7.0-alpha02'
+
 }

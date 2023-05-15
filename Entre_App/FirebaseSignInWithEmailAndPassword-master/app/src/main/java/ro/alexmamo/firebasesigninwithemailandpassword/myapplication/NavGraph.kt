@@ -42,7 +42,16 @@ fun SetUpNavGraph(
         ){
 
             backStackEntry->
-            SportFacilityDetails(backStackEntry.arguments?.getInt("id"), vm=ttvm)
+            SportFacilityDetails(backStackEntry.arguments?.getInt("id"), vm=ttvm, navcontroller = navController)
+        }
+
+        composable(
+            route=Screen.Checkout.route ,
+            arguments= listOf(navArgument("ticketTypeId"){
+                type=NavType.IntType
+            }, navArgument("amount"){type=NavType.IntType})
+        ){ backStackEntry->
+            CheckoutScreen(backStackEntry.arguments?.getInt("ticketTypeId"), backStackEntry.arguments?.getInt("amount"), navController)
         }
     }
 }

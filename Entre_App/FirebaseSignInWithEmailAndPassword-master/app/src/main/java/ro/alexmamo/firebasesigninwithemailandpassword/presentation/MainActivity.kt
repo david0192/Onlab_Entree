@@ -276,16 +276,13 @@ fun SportFacilityView(vm: SportFacilityViewModel,
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun SportFacilityDetails(id:Int?,
-                         vm: TicketTypeViewModel, viewModel: ProfileViewModel = hiltViewModel()
+                         vm: TicketTypeViewModel, viewModel: ProfileViewModel = hiltViewModel(), navcontroller: NavController
 ) {
 
     //val navController = rememberNavController()
     LaunchedEffect(Unit, block = {
         vm.getTicketTypeList(id)
     })
-
-
-
     Scaffold(
         topBar = {
             TopBar(
@@ -338,10 +335,9 @@ fun SportFacilityDetails(id:Int?,
                                             }
                                             Spacer(modifier = Modifier.width(45.dp))
                                             Button(onClick = {
-                                                //navcontroller.navigate(route = "sportfacility_details/"+sportFacility.id)
+                                                navcontroller.navigate(route = "checkout/"+ticketType.id+"/"+ticketType.price)
                                             }, colors = ButtonDefaults.buttonColors(Color.Black), modifier = Modifier.weight(1f)) {
                                                 Text(text="Vásárlás", color= Color.White );
-
                                             }
                                         }
 
@@ -387,7 +383,7 @@ fun SportFacilityDetails(id:Int?,
 
                                             Spacer(modifier = Modifier.width(45.dp))
                                             Button(onClick = {
-                                                //navcontroller.navigate(route = "sportfacility_details/"+sportFacility.id)
+                                                navcontroller.navigate(route = "checkout/"+ticketType.id+"/"+ticketType.price)
                                             }, colors = ButtonDefaults.buttonColors(Color.Black), modifier = Modifier.weight(1f)) {
                                                 Text(text="Vásárlás", color= Color.White);
 
@@ -433,7 +429,7 @@ fun SportFacilityDetails(id:Int?,
 
                                             Spacer(modifier = Modifier.width(45.dp))
                                             Button(onClick = {
-                                                //navcontroller.navigate(route = "sportfacility_details/"+sportFacility.id)
+                                                navcontroller.navigate(route = "checkout/"+ticketType.id+"/"+ticketType.price)
                                             } , colors = ButtonDefaults.buttonColors(Color.Black), modifier = Modifier.weight(1f)) {
                                                 Text(text="Vásárlás", color = Color.White);
 
@@ -483,7 +479,7 @@ fun SportFacilityDetails(id:Int?,
 
                                             Spacer(modifier = Modifier.width(45.dp))
                                             Button(onClick = {
-                                                //navcontroller.navigate(route = "sportfacility_details/"+sportFacility.id)
+                                                navcontroller.navigate(route = "checkout/"+ticketType.id+"/"+ticketType.price)
                                             }, colors = ButtonDefaults.buttonColors(Color.Black), modifier = Modifier.weight(1f)) {
                                                 Text(text="Vásárlás", color= Color.White);
 

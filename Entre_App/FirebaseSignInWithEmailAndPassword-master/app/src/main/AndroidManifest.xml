@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
         android:name=".FirebaseSignInWithEmailAndPasswordApp"
         android:allowBackup="true"
@@ -13,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FirebaseSignInWithEmailAndPassword"
-        tools:targetApi="31">
+        tools:targetApi="31"
+        >
         <activity
             android:name=".presentation.MainActivity"
             android:exported="true">
@@ -27,6 +29,21 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <activity
+            android:name="com.razorpay.CheckoutActivity"
+            android:exported="true"
+             />
+        <receiver
+            android:name="com.razorpay.RzpTokenReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.razorpay.RzpTokenReceiver" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.razorpay.otp.RECEIVED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
