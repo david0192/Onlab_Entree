@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
+import com.google.firebase.auth.FirebaseAuth
 import com.razorpay.Checkout
 import org.json.JSONObject
 
@@ -16,16 +17,17 @@ import org.json.JSONObject
 fun CheckoutScreen(
     ticketTypeId: Int?,
     amount:Int?,
-    navController: NavController
+    navController: NavController,
+    ttvm:TicketTypeViewModel
 ) {
-    val amount = amount?.times(100) // amount in paise
+    val amount = amount?.times(100)
     val orderId = "987439827"
 
     RazorpayPaymentScreen(
         amount = amount,
         orderId = orderId,
         onPaymentSuccess = {
-
+            ttvm.AddTicketToUser(ticketTypeId, email= FirebaseAuth.getInstance().currentUser?.email)
             navController.navigate(route="home_sportfacilities")
         },
         onPaymentError = {
@@ -43,7 +45,9 @@ fun RazorpayPaymentScreen(
     onPaymentError: () -> Unit
 ) {
     val activity = LocalContext.current as Activity
-    val receiver = object : BroadcastReceiver() {
+
+    var paymentResponseReceived by remember { mutableStateOf(false) }
+    val receiver =remember { object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             // Handle the received intent, e.g., check for payment success or error
             // and call the corresponding callback functions
@@ -58,12 +62,12 @@ fun RazorpayPaymentScreen(
 
             }
 
-            // Unregister the receiver once you're done with it
-            activity.unregisterReceiver(this)
+
             // Finish the activity
-            activity.finish()
+            paymentResponseReceived = true
         }
 
+        }
     }
 
     DisposableEffect(Unit) {
@@ -84,6 +88,11 @@ fun RazorpayPaymentScreen(
         activity.registerReceiver(receiver, filter)
 
         razorpay.open(activity, data)
+
+        if (paymentResponseReceived) {
+            activity.unregisterReceiver(receiver)
+            activity.finish()
+        }
 
         onDispose {
             // Unregister the receiver if the effect is disposed

@@ -58,4 +58,15 @@ class TicketTypeViewModel : ViewModel() {
             }
         }
     }
+
+    fun AddTicketToUser(ticketTypeId:Int?, email: String?){
+        val apiService = APIService.getInstance()
+        try {
+            viewModelScope.launch {
+                apiService.AddTicketToUser(ticketTypeId, email)
+            }
+        } catch (e: Exception) {
+            errorMessage = e.message.toString()
+        }
+    }
 }

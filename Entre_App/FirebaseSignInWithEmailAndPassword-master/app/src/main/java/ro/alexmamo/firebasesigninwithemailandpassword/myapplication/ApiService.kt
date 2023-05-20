@@ -29,7 +29,7 @@ data class Ticket(
     var typeName: String?
 )
 
-const val BASE_URL = "http://192.168.0.18:7111/api/"
+const val BASE_URL = "http://152.66.169.85:7111/api/"
 
 interface APIService {
     @GET("users")
@@ -46,6 +46,9 @@ interface APIService {
 
     @POST("users")
     suspend fun AddGuestUser(@Body user: User)
+
+    @POST("api/tickettypes/{ticketTypeId}/{email}")
+    suspend fun AddTicketToUser(@Path("ticketTypeId") ticketTypeId:Int?, @Path("email")email: String?)
 
     companion object {
         var apiService: APIService? = null

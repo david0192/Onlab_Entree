@@ -51,7 +51,7 @@ fun SetUpNavGraph(
                 type=NavType.IntType
             }, navArgument("amount"){type=NavType.IntType})
         ){ backStackEntry->
-            CheckoutScreen(backStackEntry.arguments?.getInt("ticketTypeId"), backStackEntry.arguments?.getInt("amount"), navController)
+            CheckoutScreen(backStackEntry.arguments?.getInt("ticketTypeId"), backStackEntry.arguments?.getInt("amount"), navController, ttvm=ttvm)
         }
     }
 }
