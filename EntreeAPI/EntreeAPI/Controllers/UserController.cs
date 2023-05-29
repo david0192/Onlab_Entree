@@ -27,6 +27,40 @@ namespace EntreeAPI.Controllers
 
             return Ok(users);
         }
+
+        [HttpPost]
+        public async Task AddGuestUser(UserDTO userDTO)
+        {
+            var user= _context.Users.Where(u=>u.Email==userDTO.Email).FirstOrDefault();
+            if (user==null)
+            {
+
+                var newuser = new User
+                {
+                    Email = userDTO.Email,
+                    Role = userDTO.Role,
+
+                };
+  
+                 _context.Users.Add(newuser);
+
+                if (userDTO.Role == "Guest")
+                {
+                    var guest = new Guest
+                    {
+                        User = newuser
+                    };
+                    _context.Guests.Add(guest);
+
+                    newuser.Guest = guest;
+                }
+
+               
+
+                await _context.SaveChangesAsync();
+            }
+
+        }
     }
 
 }

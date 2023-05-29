@@ -160,12 +160,13 @@ namespace EntreeAPI.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("UserId")
+                    b.Property<int>("userId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("userId")
+                        .IsUnique();
 
                     b.ToTable("Guests");
                 });
@@ -200,6 +201,9 @@ namespace EntreeAPI.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime?>("ExpirationDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("GuestId")
                         .HasColumnType("int");
@@ -322,10 +326,6 @@ namespace EntreeAPI.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Role")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -383,8 +383,8 @@ namespace EntreeAPI.Migrations
             modelBuilder.Entity("EntreeAPI.Entities.Guest", b =>
                 {
                     b.HasOne("EntreeAPI.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .WithOne("Guest")
+                        .HasForeignKey("EntreeAPI.Entities.Guest", "userId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -473,6 +473,12 @@ namespace EntreeAPI.Migrations
             modelBuilder.Entity("EntreeAPI.Entities.Trainer", b =>
                 {
                     b.Navigation("TrainerDates");
+                });
+
+            modelBuilder.Entity("EntreeAPI.Entities.User", b =>
+                {
+                    b.Navigation("Guest")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

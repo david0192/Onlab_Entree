@@ -12,6 +12,7 @@ namespace EntreeAPI
             CreateMap<User, UserDTO>();
             CreateMap<SportFacility, SportFacilityDTO>();
             CreateMap<TicketType, TicketTypeDTO>();
+            CreateMap<Ticket, TicketDTO>();
         }
     }
 }

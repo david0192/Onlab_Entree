@@ -15,6 +15,8 @@ namespace EntreeAPI.Entities
 
         public Guest Guest { get; set; }
 
+        public DateTime? ExpirationDate { get; set; }
+
 
     }
 }

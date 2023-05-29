@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EntreeAPI.Controllers
 {
-   
+
     [ApiController]
     public class TicketTypeController : ControllerBase
     {
@@ -26,9 +26,76 @@ namespace EntreeAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TicketTypeDTO>>> GetTicketTypeById(int id)
         {
-            var tickettypes = await _mapper.ProjectTo<TicketTypeDTO>(_context.TicketTypes.Where(t=>t.Id==id)).ToListAsync();
+            var tickettypes = await _mapper.ProjectTo<TicketTypeDTO>(_context.TicketTypes.Where(t => t.Id == id)).ToListAsync();
 
             return Ok(tickettypes);
         }
+
+        [Route("api/tickets/{email}")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<TicketDTO>>> GetTicketsByEmail(string email)
+        {
+            var userquery = await _context.Users.Where(u => u.Email == email).Include(u => u.Guest).FirstOrDefaultAsync();
+
+            if (userquery == null)
+            {
+                return null;
+            }
+            else
+            {
+                if (userquery.Role != "Guest")
+                {
+                    return null;
+                }
+                else
+                {
+                    if (userquery.Guest == null)
+                    {
+                        throw new ArgumentException("Guest nem lehet null!");
+                    }
+                    else
+                    {
+                        var guestId = userquery.Guest.Id;
+                        var ticketlistquery = await _mapper.ProjectTo<TicketDTO>(_context.Tickets.Where(t => t.GuestId == guestId)).ToListAsync();
+                        return Ok(ticketlistquery);
+                    }
+                }
+            }
+
+        }
+
+        [Route("api/tickettypes/{ticketTypeId}/{email}")]
+        [HttpPost]
+        public async Task AddTicketToUser(int? ticketTypeId, string email)
+        {
+            if (ticketTypeId != null)
+            {
+                var userquery = await _context.Users.Where(u => u.Email == email).Include(u => u.Guest).FirstOrDefaultAsync();
+
+                if (userquery != null)
+                {
+                    if (userquery.Role == "Guest" && userquery.Guest != null)
+                    {
+                        var guestId = userquery.Guest.Id;
+                        Ticket newticket = new Ticket() { TicketTypeId =(int)ticketTypeId, GuestId = guestId };
+                        var categoryId = await _context.TicketTypes.Where(x => x.Id == ticketTypeId).Select(x => x.CategoryId).FirstOrDefaultAsync();
+                        if (categoryId == 2)
+                        {
+                            newticket.ExpirationDate = DateTime.Now.AddDays(30);
+                        }
+
+                        await _context.Tickets.AddAsync(newticket);
+                        await _context.SaveChangesAsync();
+
+                    }
+
+                }
+            }
+            
+            
+
+        }
+
+
     }
 }
