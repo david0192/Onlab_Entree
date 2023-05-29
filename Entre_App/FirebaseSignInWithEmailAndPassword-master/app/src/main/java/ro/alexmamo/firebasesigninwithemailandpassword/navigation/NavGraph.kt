@@ -19,7 +19,9 @@ import ro.alexmamo.firebasesigninwithemailandpassword.myapplication.TicketTypeVi
 import ro.alexmamo.firebasesigninwithemailandpassword.myapplication.User
 import ro.alexmamo.firebasesigninwithemailandpassword.myapplication.UserViewModel
 import ro.alexmamo.firebasesigninwithemailandpassword.navigation.Screen.*
-import ro.alexmamo.firebasesigninwithemailandpassword.presentation.HomeScreen
+import ro.alexmamo.firebasesigninwithemailandpassword.myapplication.HomeScreen
+import ro.alexmamo.firebasesigninwithemailandpassword.myapplication.Screen
+import ro.alexmamo.firebasesigninwithemailandpassword.presentation.IntWrapper
 import ro.alexmamo.firebasesigninwithemailandpassword.presentation.forgot_password.ForgotPasswordScreen
 import ro.alexmamo.firebasesigninwithemailandpassword.presentation.profile.ProfileScreen
 import ro.alexmamo.firebasesigninwithemailandpassword.presentation.sign_in.SignInScreen
@@ -31,10 +33,11 @@ import ro.alexmamo.firebasesigninwithemailandpassword.presentation.verify_email.
 @ExperimentalComposeUiApi
 fun NavGraph(
     navController: NavHostController,
+    myNavController:NavHostController,
      spfvm:SportFacilityViewModel,
      ttvm:TicketTypeViewModel,
-     uvm:UserViewModel
-
+     uvm:UserViewModel,
+    boughtTicketTypeId:IntWrapper
 ) {
     AnimatedNavHost(
         navController = navController,
@@ -92,7 +95,7 @@ fun NavGraph(
         composable(
             route = ProfileScreen.route
         ) {
-            HomeScreen(navcontroller = rememberNavController(), sportFacilityViewModel = spfvm, ticketTypeViewModel = ttvm, userViewModel = uvm)
+            HomeScreen(navcontroller = myNavController, sportFacilityViewModel = spfvm, ticketTypeViewModel = ttvm, userViewModel = uvm, boughtTicketTypeId=boughtTicketTypeId)
         }
     }
 }

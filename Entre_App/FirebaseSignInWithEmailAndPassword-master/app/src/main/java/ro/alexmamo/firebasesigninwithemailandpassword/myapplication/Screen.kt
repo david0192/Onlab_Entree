@@ -7,6 +7,7 @@ sealed class Screen(val route:String){
     object Profile:Screen(route="profile")
     object Detail:Screen(route="sportfacility_details/{$SPORT_DETAIL_ARGUMENT_KEY}")
     object Checkout:Screen(route="checkout/{ticketTypeId}/{amount}")
+    object QrCode:Screen(route="qrcode")
 
 
 

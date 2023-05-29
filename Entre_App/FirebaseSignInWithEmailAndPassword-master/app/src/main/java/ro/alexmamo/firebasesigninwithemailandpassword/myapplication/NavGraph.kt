@@ -8,15 +8,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import ro.alexmamo.firebasesigninwithemailandpassword.myapplication.MyProfile
-import ro.alexmamo.firebasesigninwithemailandpassword.presentation.SportFacilityDetails
-import ro.alexmamo.firebasesigninwithemailandpassword.presentation.SportFacilityView
+import ro.alexmamo.firebasesigninwithemailandpassword.myapplication.SportFacilityDetails
+import ro.alexmamo.firebasesigninwithemailandpassword.myapplication.SportFacilityView
+import ro.alexmamo.firebasesigninwithemailandpassword.presentation.IntWrapper
 
 @Composable
 fun SetUpNavGraph(
     navController: NavHostController,
      ttvm:TicketTypeViewModel,
     spfvm:SportFacilityViewModel,
-    uvm:UserViewModel
+    uvm:UserViewModel,
+    boughtTicketTypeId:IntWrapper
 ){
     NavHost(
         navController = navController,
@@ -31,7 +33,7 @@ fun SetUpNavGraph(
         composable(
             route=Screen.Profile.route,
         ){
-            MyProfile(ticketTypeViewModel = ttvm)
+            MyProfile(ticketTypeViewModel = ttvm,navcontroller = navController )
         }
 
         composable(
@@ -51,7 +53,13 @@ fun SetUpNavGraph(
                 type=NavType.IntType
             }, navArgument("amount"){type=NavType.IntType})
         ){ backStackEntry->
-            CheckoutScreen(backStackEntry.arguments?.getInt("ticketTypeId"), backStackEntry.arguments?.getInt("amount"), navController, ttvm=ttvm)
+            CheckoutScreen(backStackEntry.arguments?.getInt("ticketTypeId"), backStackEntry.arguments?.getInt("amount"), navController, ttvm=ttvm, boughtTicketTypeId=boughtTicketTypeId)
+        }
+
+        composable(
+            route = Screen.QrCode.route
+        ) {
+            QrCodeScreen("www.google.com")
         }
     }
 }

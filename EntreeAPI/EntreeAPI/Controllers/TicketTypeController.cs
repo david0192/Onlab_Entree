@@ -66,28 +66,32 @@ namespace EntreeAPI.Controllers
 
         [Route("api/tickettypes/{ticketTypeId}/{email}")]
         [HttpPost]
-        public async Task AddTicketToUser(int ticketTypeId, string email)
+        public async Task AddTicketToUser(int? ticketTypeId, string email)
         {
-            var userquery = await _context.Users.Where(u => u.Email == email).Include(u => u.Guest).FirstOrDefaultAsync();
-
-            if (userquery != null  )
+            if (ticketTypeId != null)
             {
-                if(userquery.Role =="Guest" && userquery.Guest != null)
+                var userquery = await _context.Users.Where(u => u.Email == email).Include(u => u.Guest).FirstOrDefaultAsync();
+
+                if (userquery != null)
                 {
-                    var guestId = userquery.Guest.Id;
-                    Ticket newticket = new Ticket() { TicketTypeId = ticketTypeId, GuestId = guestId };
-                    var categoryId = await _context.TicketTypes.Where(x => x.Id == ticketTypeId).Select(x =>x.CategoryId).FirstOrDefaultAsync() ;
-                    if (categoryId == 2)
+                    if (userquery.Role == "Guest" && userquery.Guest != null)
                     {
-                        newticket.ExpirationDate= DateTime.Now.AddDays(30);
+                        var guestId = userquery.Guest.Id;
+                        Ticket newticket = new Ticket() { TicketTypeId =(int)ticketTypeId, GuestId = guestId };
+                        var categoryId = await _context.TicketTypes.Where(x => x.Id == ticketTypeId).Select(x => x.CategoryId).FirstOrDefaultAsync();
+                        if (categoryId == 2)
+                        {
+                            newticket.ExpirationDate = DateTime.Now.AddDays(30);
+                        }
+
+                        await _context.Tickets.AddAsync(newticket);
+                        await _context.SaveChangesAsync();
+
                     }
 
-                    await _context.Tickets.AddAsync(newticket);
-                    await _context.SaveChangesAsync();
-
                 }
-                
             }
+            
             
 
         }

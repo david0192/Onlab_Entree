@@ -2,6 +2,7 @@ package ro.alexmamo.firebasesigninwithemailandpassword.presentation
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -42,10 +43,12 @@ import ro.alexmamo.firebasesigninwithemailandpassword.navigation.NavGraph
 import ro.alexmamo.firebasesigninwithemailandpassword.navigation.Screen.*
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.razorpay.PaymentResultListener
 import ro.alexmamo.firebasesigninwithemailandpassword.R
 import ro.alexmamo.firebasesigninwithemailandpassword.myapplication.*
 import ro.alexmamo.firebasesigninwithemailandpassword.presentation.profile.ProfileViewModel
@@ -53,19 +56,26 @@ import ro.alexmamo.firebasesigninwithemailandpassword.presentation.profile.Profi
 @AndroidEntryPoint
 @ExperimentalAnimationApi
 @ExperimentalComposeUiApi
-class MainActivity : ComponentActivity() {
+class MainActivity : ComponentActivity(), PaymentResultListener {
     private lateinit var navController: NavHostController
+    private lateinit var myNavController:NavHostController
+    private lateinit var ttvm:TicketTypeViewModel
+    var boughtTicketTypeId=IntWrapper(null)
     private val viewModel by viewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             navController = rememberAnimatedNavController()
+            myNavController= rememberNavController()
+            ttvm= TicketTypeViewModel()
             NavGraph(
                 navController = navController,
+                myNavController=myNavController,
                 spfvm = SportFacilityViewModel(),
-                ttvm=TicketTypeViewModel(),
-                uvm= UserViewModel()
+                ttvm=ttvm,
+                uvm= UserViewModel(),
+                boughtTicketTypeId=boughtTicketTypeId
             )
             AuthState()
         }
@@ -105,398 +115,16 @@ class MainActivity : ComponentActivity() {
             inclusive = true
         }
     }
-}
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Composable
-fun HomeScreen(navcontroller: NavHostController, sportFacilityViewModel: SportFacilityViewModel, ticketTypeViewModel: TicketTypeViewModel, userViewModel: UserViewModel){
-    Scaffold(bottomBar = {
-        BottomBar(navController=navcontroller)
-    }) {
-        SetUpNavGraph(navController = navcontroller, spfvm= sportFacilityViewModel, ttvm= ticketTypeViewModel, uvm=userViewModel)
+    override fun onPaymentSuccess(p0: String?) {
+        ttvm.AddTicketToUser(boughtTicketTypeId.value, email= FirebaseAuth.getInstance().currentUser?.email)
+        myNavController.navigate(route="home_sportfacilities")
+    }
+
+    override fun onPaymentError(p0: Int, p1: String?) {
+        myNavController.navigate(route="home_sportfacilities")
     }
 }
 
-@Composable
-fun BottomBar(navController: NavHostController) {
-    val screens = listOf(
-        BottomBarScreen.Home,
-        BottomBarScreen.Profile,
-    )
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
-
-    val bottomBarDestination = screens.any { it.route == currentDestination?.route }
-    if (bottomBarDestination) {
-        BottomNavigation(backgroundColor = Color.DarkGray) {
-            screens.forEach { screen ->
-                AddItem(
-                    screen = screen,
-                    currentDestination = currentDestination,
-                    navController = navController
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun RowScope.AddItem(
-    screen: BottomBarScreen,
-    currentDestination: NavDestination?,
-    navController: NavHostController
-) {
-    BottomNavigationItem(
-        label = {
-            Text(text = screen.title, color=Color.White)
-        },
-        icon = {
-            Icon(
-                imageVector = screen.icon,
-                contentDescription = "Navigation Icon",
-                tint=Color.White
-            )
-        },
-        selected = currentDestination?.hierarchy?.any {
-            it.route == screen.route
-        } == true,
-        unselectedContentColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled),
-        onClick = {
-            navController.navigate(screen.route) {
-                popUpTo(navController.graph.findStartDestination().id)
-            }
-        }
-    )
-}
-
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Composable
-fun SportFacilityView(vm: SportFacilityViewModel,
-                      navcontroller: NavController, viewModel: ProfileViewModel = hiltViewModel()
-
-) {
-
-    //val navController = rememberNavController()
-    LaunchedEffect(Unit, block = {
-        vm.getSportFacilityList()
-
-    })
-
-    Scaffold(
-        topBar = {
-            TopBar(
-
-                title = "Sport Fascilities",
-
-                signOut = {
-                    viewModel.signOut()
-                },
-                revokeAccess = {
-                    viewModel.revokeAccess()
-                }
-
-            )
-
-
-        },
-        content = {
-            if (vm.errorMessage.isEmpty()) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    LazyColumn(modifier = Modifier.fillMaxHeight()) {
-                        items(vm.sportFacilityList) { sportFacility ->
-                            Column {
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(16.dp),
-                                    horizontalArrangement = Arrangement.SpaceBetween,
-
-                                    ) {
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(0.dp, 0.dp, 16.dp, 0.dp),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        Row(
-                                        ){
-                                            Surface(
-                                                modifier = Modifier
-                                                    .size(54.dp)
-                                                    .padding(5.dp),
-                                                shape = CircleShape,
-                                                border = BorderStroke(0.5.dp, Color.LightGray),
-                                                elevation = 4.dp,
-                                                color = MaterialTheme.colors.onSurface.copy(alpha = 0.5f)
-                                            ) {
-                                                Image(
-                                                    painter = painterResource(id = R.drawable.gymicon),
-                                                    contentDescription = "profile image",
-                                                    modifier = Modifier.size(35.dp),
-                                                    contentScale = ContentScale.Crop
-                                                )
-
-                                            }
-                                            Spacer(modifier = Modifier.width(10.dp))
-                                            Text(
-                                                sportFacility.name,
-                                                maxLines = 1,
-                                                overflow = TextOverflow.Ellipsis,
-                                                textAlign = TextAlign.Center,
-                                                modifier = Modifier.weight(1f).padding(0.dp, 5.dp)
-                                            )
-                                            Spacer(modifier = Modifier.width(75.dp))
-                                            Button(onClick = {
-                                                navcontroller.navigate(route = "sportfacility_details/"+sportFacility.id)
-                                            }, modifier = Modifier.weight(1f), colors = ButtonDefaults.buttonColors(
-                                                Color.Black)) {
-                                                Text(text="Megnézem", color= Color.White, fontSize = 10.sp);
-
-                                            }
-                                        }
-
-                                    }
-
-
-                                }
-                                Divider()
-                            }
-                        }
-                    }
-                }
-            } else {
-                Text(vm.errorMessage)
-            }
-        },
-
-
-        )
-}
-
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Composable
-fun SportFacilityDetails(id:Int?,
-                         vm: TicketTypeViewModel, viewModel: ProfileViewModel = hiltViewModel(), navcontroller: NavController
-) {
-
-    //val navController = rememberNavController()
-    LaunchedEffect(Unit, block = {
-        vm.getTicketTypeList(id)
-    })
-    Scaffold(
-        topBar = {
-            TopBar(
-
-                title = "Ticket types",
-
-                signOut = {
-                    viewModel.signOut()
-                },
-                revokeAccess = {
-                    viewModel.revokeAccess()
-                }
-
-            )
-        },
-        content = {
-            if (vm.errorMessage.isEmpty()) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text(text = "Napijegyek", fontSize = 30.sp, fontWeight = FontWeight.Bold)
-                    LazyColumn(modifier = Modifier
-                        .fillMaxHeight()
-                        .weight(1f)) {
-                        items(vm.ticketTypeList_Daily) { ticketType ->
-                            Column {
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(16.dp),
-                                    horizontalArrangement = Arrangement.SpaceBetween
-                                ) {
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(0.dp, 0.dp, 16.dp, 0.dp)
-                                    ) {
-                                        Row() {
-                                            Column(modifier = Modifier.weight(1f)){
-                                                Text(
-                                                    ticketType.name,
-                                                    maxLines = 1,
-                                                    overflow = TextOverflow.Ellipsis,
-
-                                                    )
-                                                Text(
-                                                    text="Ár: "+ ticketType.price,
-                                                    maxLines = 1,
-                                                    overflow = TextOverflow.Ellipsis,
-
-                                                    )
-                                            }
-                                            Spacer(modifier = Modifier.width(45.dp))
-                                            Button(onClick = {
-                                                navcontroller.navigate(route = "checkout/"+ticketType.id+"/"+ticketType.price)
-                                            }, colors = ButtonDefaults.buttonColors(Color.Black), modifier = Modifier.weight(1f)) {
-                                                Text(text="Vásárlás", color= Color.White );
-                                            }
-                                        }
-
-                                    }
-
-                                }
-                                Divider()
-                            }
-                        }
-                    }
-
-                    Text(text = "Bérletek", fontSize = 30.sp, fontWeight = FontWeight.Bold)
-                    LazyColumn(modifier = Modifier
-                        .fillMaxHeight()
-                        .weight(1f)) {
-                        items(vm.ticketTypeList_Monthly) { ticketType ->
-                            Column {
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(16.dp),
-                                    horizontalArrangement = Arrangement.SpaceBetween
-                                ) {
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(0.dp, 0.dp, 16.dp, 0.dp)
-                                    ) {
-                                        Row() {
-                                            Column(modifier = Modifier.weight(1f)){
-                                                Text(
-                                                    ticketType.name,
-                                                    maxLines = 1,
-                                                    overflow = TextOverflow.Ellipsis ,
-
-                                                    )
-                                                Text(
-                                                    text="Ár: "+ ticketType.price,
-                                                    maxLines = 1,
-                                                    overflow = TextOverflow.Ellipsis,
-                                                )
-                                            }
-
-                                            Spacer(modifier = Modifier.width(45.dp))
-                                            Button(onClick = {
-                                                navcontroller.navigate(route = "checkout/"+ticketType.id+"/"+ticketType.price)
-                                            }, colors = ButtonDefaults.buttonColors(Color.Black), modifier = Modifier.weight(1f)) {
-                                                Text(text="Vásárlás", color= Color.White);
-
-                                            }
-                                        }
-                                    }
-                                }
-                                Divider()
-                            }
-                        }
-                    }
-                    Text(text = "Csoportos Órák", fontSize = 30.sp, fontWeight = FontWeight.Bold)
-                    LazyColumn(modifier = Modifier
-                        .fillMaxHeight()
-                        .weight(1f)) {
-                        items(vm.ticketTypeList_Group) { ticketType ->
-                            Column {
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(16.dp),
-                                    horizontalArrangement = Arrangement.SpaceBetween
-                                ) {
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(0.dp, 0.dp, 16.dp, 0.dp)
-                                    ) {
-                                        Row() {
-                                            Column(modifier = Modifier.weight(1f)){
-                                                Text(
-                                                    ticketType.name,
-                                                    maxLines = 1,
-                                                    overflow = TextOverflow.Ellipsis,
-
-                                                    )
-                                                Text(
-                                                    text="Ár: "+ ticketType.price,
-                                                    maxLines = 1,
-                                                    overflow = TextOverflow.Ellipsis,
-                                                )
-                                            }
-
-                                            Spacer(modifier = Modifier.width(45.dp))
-                                            Button(onClick = {
-                                                navcontroller.navigate(route = "checkout/"+ticketType.id+"/"+ticketType.price)
-                                            } , colors = ButtonDefaults.buttonColors(Color.Black), modifier = Modifier.weight(1f)) {
-                                                Text(text="Vásárlás", color = Color.White);
-
-                                            }
-                                        }
-                                    }
-                                }
-                                Divider()
-                            }
-                        }
-                    }
-                    Text(
-                        text = "Személyi Edzés",
-                        fontSize = 30.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                    LazyColumn(modifier = Modifier
-                        .fillMaxHeight()
-                        .weight(1f)) {
-                        items(vm.ticketTypeList_Trainer) { ticketType ->
-                            Column {
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(16.dp),
-                                    horizontalArrangement = Arrangement.SpaceBetween
-                                ) {
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(0.dp, 0.dp, 16.dp, 0.dp)
-                                    ) {
-                                        Row() {
-                                            Column(modifier = Modifier.weight(1f)){
-                                                Text(
-                                                    ticketType.name,
-                                                    maxLines = 1,
-                                                    overflow = TextOverflow.Ellipsis,
-
-                                                    )
-                                                Text(
-                                                    text="Ár: "+ ticketType.price,
-                                                    maxLines = 1,
-                                                    overflow = TextOverflow.Ellipsis,
-                                                )
-                                            }
-
-                                            Spacer(modifier = Modifier.width(45.dp))
-                                            Button(onClick = {
-                                                navcontroller.navigate(route = "checkout/"+ticketType.id+"/"+ticketType.price)
-                                            }, colors = ButtonDefaults.buttonColors(Color.Black), modifier = Modifier.weight(1f)) {
-                                                Text(text="Vásárlás", color= Color.White);
-
-                                            }
-                                        }
-                                    }
-                                }
-                                Divider()
-                            }
-                        }
-                    }
-                }
-            } else {
-                Text(vm.errorMessage)
-            }
-        }
-    )
-}
-
+class IntWrapper(var value: Int?)
 

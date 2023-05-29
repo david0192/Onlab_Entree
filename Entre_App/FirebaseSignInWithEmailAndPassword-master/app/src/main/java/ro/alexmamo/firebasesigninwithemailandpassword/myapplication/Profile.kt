@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.google.firebase.auth.FirebaseAuth
 import ro.alexmamo.firebasesigninwithemailandpassword.R
 import ro.alexmamo.firebasesigninwithemailandpassword.components.TopBar
@@ -31,7 +32,7 @@ import ro.alexmamo.firebasesigninwithemailandpassword.presentation.profile.Profi
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun MyProfile(viewModel: ProfileViewModel = hiltViewModel(), ticketTypeViewModel: TicketTypeViewModel){
+fun MyProfile(viewModel: ProfileViewModel = hiltViewModel(), ticketTypeViewModel: TicketTypeViewModel, navcontroller: NavHostController){
 
     LaunchedEffect(Unit, block = {
         ticketTypeViewModel.getTicketsByEmail(FirebaseAuth.getInstance().currentUser?.email)
@@ -54,7 +55,7 @@ fun MyProfile(viewModel: ProfileViewModel = hiltViewModel(), ticketTypeViewModel
         content = {
 
             Box(){
-                CreateProfileCard(ticketTypeViewModel=ticketTypeViewModel)
+                CreateProfileCard(ticketTypeViewModel=ticketTypeViewModel, navcontroller=navcontroller)
 
             }
         })
@@ -82,7 +83,7 @@ private fun CreateImageProfile(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun CreateInfo(ticketTypeViewModel: TicketTypeViewModel) {
+private fun CreateInfo(ticketTypeViewModel: TicketTypeViewModel , navcontroller: NavHostController) {
     var email= FirebaseAuth.getInstance().currentUser?.email?.let { it1 -> Text(it1) }
     Column(
         modifier = Modifier
@@ -97,16 +98,7 @@ private fun CreateInfo(ticketTypeViewModel: TicketTypeViewModel) {
             text = "Name"
         )
 
-        Text(
-            text = "Androdi Compose Programmer",
-            modifier = Modifier.padding(3.dp)
-        )
 
-        Text(
-            text = "@JetpackCompose",
-            modifier = Modifier.padding(3.dp),
-            style = MaterialTheme.typography.subtitle1
-        )
         if (ticketTypeViewModel.errorMessage.isEmpty()) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(text = "Megvásárolt jegyek", fontSize = 30.sp, fontWeight = FontWeight.Bold)
@@ -143,7 +135,7 @@ private fun CreateInfo(ticketTypeViewModel: TicketTypeViewModel) {
                                         Spacer(modifier = Modifier.width(45.dp))
                                         Button(
                                             onClick = {
-
+                                                navcontroller.navigate(route = "qrcode")
                                             },
                                             colors = ButtonDefaults.buttonColors(Color.Black),
                                             modifier = Modifier.weight(1f)
@@ -171,7 +163,7 @@ private fun CreateInfo(ticketTypeViewModel: TicketTypeViewModel) {
 }
 
 @Composable
-fun CreateProfileCard(ticketTypeViewModel: TicketTypeViewModel) {
+fun CreateProfileCard(ticketTypeViewModel: TicketTypeViewModel, navcontroller: NavHostController) {
     val buttonClickedState = remember {
         mutableStateOf(false)
     }
@@ -198,7 +190,7 @@ fun CreateProfileCard(ticketTypeViewModel: TicketTypeViewModel) {
             ) {
                 CreateImageProfile()
                 Divider()
-                CreateInfo(ticketTypeViewModel = ticketTypeViewModel)
+                CreateInfo(ticketTypeViewModel = ticketTypeViewModel, navcontroller=navcontroller)
 
             }
         }

@@ -12,27 +12,24 @@ import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
 import com.razorpay.Checkout
 import org.json.JSONObject
+import ro.alexmamo.firebasesigninwithemailandpassword.presentation.IntWrapper
+import ro.alexmamo.firebasesigninwithemailandpassword.presentation.MainActivity
 
 @Composable
 fun CheckoutScreen(
     ticketTypeId: Int?,
     amount:Int?,
     navController: NavController,
-    ttvm:TicketTypeViewModel
+    ttvm:TicketTypeViewModel,
+    boughtTicketTypeId:IntWrapper
 ) {
     val amount = amount?.times(100)
     val orderId = "987439827"
+    boughtTicketTypeId.value=ticketTypeId
 
     RazorpayPaymentScreen(
         amount = amount,
         orderId = orderId,
-        onPaymentSuccess = {
-            ttvm.AddTicketToUser(ticketTypeId, email= FirebaseAuth.getInstance().currentUser?.email)
-            navController.navigate(route="home_sportfacilities")
-        },
-        onPaymentError = {
-            navController.navigate(route="home_sportfacilities")
-        }
     )
 }
 
@@ -41,34 +38,8 @@ fun CheckoutScreen(
 fun RazorpayPaymentScreen(
     amount: Int?,
     orderId: String,
-    onPaymentSuccess: () -> Unit,
-    onPaymentError: () -> Unit
 ) {
     val activity = LocalContext.current as Activity
-
-    var paymentResponseReceived by remember { mutableStateOf(false) }
-    val receiver =remember { object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            // Handle the received intent, e.g., check for payment success or error
-            // and call the corresponding callback functions
-            val paymentId = intent?.getStringExtra("payment_id")
-            val error = intent?.getStringExtra("error_description")
-
-            if (paymentId != null) {
-                onPaymentSuccess()
-
-            } else if (error != null) {
-                onPaymentError()
-
-            }
-
-
-            // Finish the activity
-            paymentResponseReceived = true
-        }
-
-        }
-    }
 
     DisposableEffect(Unit) {
         val razorpay = Checkout()
@@ -83,21 +54,12 @@ fun RazorpayPaymentScreen(
         data.put("prefill.contact", "9999999999")
         data.put("prefill.email", "test@test.com")
 
-        val filter = IntentFilter()
-        filter.addAction("com.razorpay.payment")
-        activity.registerReceiver(receiver, filter)
+
 
         razorpay.open(activity, data)
 
-        if (paymentResponseReceived) {
-            activity.unregisterReceiver(receiver)
-            activity.finish()
-        }
-
         onDispose {
-            // Unregister the receiver if the effect is disposed
-            activity.unregisterReceiver(receiver)
-            activity.finish()
+
         }
 
     }
