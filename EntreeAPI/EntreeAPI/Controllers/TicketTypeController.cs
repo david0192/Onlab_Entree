@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EntreeAPI.Entities;
+using EntreeAPI.Migrations;
 using EntreeAPI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -76,11 +77,21 @@ namespace EntreeAPI.Controllers
                 {
                     if (userquery.Role == "Guest" && userquery.Guest != null)
                     {
-                        var guestId = userquery.Guest.Id;
-                        Ticket newticket = new Ticket() { TicketTypeId =(int)ticketTypeId, GuestId = guestId };
+                        var guest = userquery.Guest;
+                        Ticket newticket = new Ticket() { TicketTypeId =(int)ticketTypeId, GuestId = guest.Id };
                         var categoryId = await _context.TicketTypes.Where(x => x.Id == ticketTypeId).Select(x => x.CategoryId).FirstOrDefaultAsync();
                         if (categoryId == 2)
                         {
+                            var tickets=await _context.Tickets.Where(x=>x.GuestId==guest.Id).Include(x=>x.Type).ToListAsync();
+                            var guestsTicketTypes=tickets.Select(x=>x.Type).ToList();
+                            foreach(var type in guestsTicketTypes)
+                            {
+                                if (type.CategoryId == 2)
+                                {
+                                    return;
+                                }
+                            }
+
                             newticket.ExpirationDate = DateTime.Now.AddDays(30);
                         }
 
