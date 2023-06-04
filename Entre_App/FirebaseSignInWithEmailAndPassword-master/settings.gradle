@@ -6,5 +6,5 @@ pluginManagement {
     }
 }
 
-rootProject.name = "FirebaseSignInWithEmailAndPassword"
+rootProject.name = "EntreeApp"
 include ':app'
