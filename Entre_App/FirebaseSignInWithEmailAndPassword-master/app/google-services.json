@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:192534507851:android:4dc5a3b41a9cf812ac38ce",
+        "mobilesdk_app_id": "1:192534507851:android:1b716189386fd90bac38ce",
         "android_client_info": {
-          "package_name": "ro.alexmamo.firebasesigninwithemailandpassword"
+          "package_name": "com.entree.entreeapp"
         }
       },
       "oauth_client": [

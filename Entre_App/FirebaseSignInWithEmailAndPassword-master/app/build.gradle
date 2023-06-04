@@ -9,11 +9,11 @@ plugins {
 apply plugin: 'com.android.application'
 
 android {
-    namespace 'ro.alexmamo.firebasesigninwithemailandpassword'
+    namespace 'com.entree.entreeapp'
     compileSdk 33
 
     defaultConfig {
-        applicationId "ro.alexmamo.firebasesigninwithemailandpassword"
+        applicationId "com.entree.entreeapp"
         minSdk 21
         targetSdk 33
         versionCode 1
