@@ -1,9 +1,11 @@
-package ro.alexmamo.firebasesigninwithemailandpassword.myapplication
+package ro.alexmamo.firebasesigninwithemailandpassword.presentation.profile
 
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ro.alexmamo.firebasesigninwithemailandpassword.apiservice.APIService
+import ro.alexmamo.firebasesigninwithemailandpassword.apiservice.User
 
 
 class UserViewModel : ViewModel() {

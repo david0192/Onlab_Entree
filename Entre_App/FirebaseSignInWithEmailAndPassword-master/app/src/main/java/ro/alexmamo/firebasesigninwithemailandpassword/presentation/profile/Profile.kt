@@ -6,11 +6,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,6 +29,7 @@ import com.google.firebase.auth.FirebaseAuth
 import ro.alexmamo.firebasesigninwithemailandpassword.R
 import ro.alexmamo.firebasesigninwithemailandpassword.components.TopBar
 import ro.alexmamo.firebasesigninwithemailandpassword.presentation.profile.ProfileViewModel
+import ro.alexmamo.firebasesigninwithemailandpassword.presentation.sportfacilities.TicketTypeViewModel
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -85,7 +84,7 @@ private fun CreateImageProfile(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun CreateInfo(ticketTypeViewModel: TicketTypeViewModel , navcontroller: NavHostController) {
+private fun CreateInfo(ticketTypeViewModel: TicketTypeViewModel, navcontroller: NavHostController) {
     var email= FirebaseAuth.getInstance().currentUser?.email?.let { it1 -> Text(it1) }
     Column(
         modifier = Modifier

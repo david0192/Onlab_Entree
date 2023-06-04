@@ -11,7 +11,12 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import ro.alexmamo.firebasesigninwithemailandpassword.navigation.app.SetUpNavGraph
 import ro.alexmamo.firebasesigninwithemailandpassword.presentation.IntWrapper
+import ro.alexmamo.firebasesigninwithemailandpassword.screen.BottomBarScreen
+import ro.alexmamo.firebasesigninwithemailandpassword.presentation.sportfacilities.SportFacilityViewModel
+import ro.alexmamo.firebasesigninwithemailandpassword.presentation.sportfacilities.TicketTypeViewModel
+import ro.alexmamo.firebasesigninwithemailandpassword.presentation.profile.UserViewModel
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable

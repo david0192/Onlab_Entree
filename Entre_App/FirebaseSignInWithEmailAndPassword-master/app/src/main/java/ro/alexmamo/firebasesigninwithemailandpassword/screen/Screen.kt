@@ -1,4 +1,4 @@
-package ro.alexmamo.firebasesigninwithemailandpassword.myapplication
+package ro.alexmamo.firebasesigninwithemailandpassword.screen
 
 const val SPORT_DETAIL_ARGUMENT_KEY="id"
 

@@ -1,4 +1,4 @@
-package ro.alexmamo.firebasesigninwithemailandpassword.myapplication
+package ro.alexmamo.firebasesigninwithemailandpassword.apiservice
 
 import androidx.compose.runtime.MutableState
 import retrofit2.Retrofit
@@ -29,7 +29,7 @@ data class Ticket(
     var typeName: String?
 )
 
-const val BASE_URL = "http://192.168.0.24:7111/api/"
+const val BASE_URL = "http://192.168.83.1:7111/api/"
 
 interface APIService {
     @GET("users")

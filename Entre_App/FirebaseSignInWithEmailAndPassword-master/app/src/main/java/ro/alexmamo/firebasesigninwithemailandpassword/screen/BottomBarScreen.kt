@@ -1,4 +1,4 @@
-package ro.alexmamo.firebasesigninwithemailandpassword.myapplication
+package ro.alexmamo.firebasesigninwithemailandpassword.screen
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home

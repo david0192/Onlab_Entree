@@ -1,23 +1,24 @@
-package ro.alexmamo.firebasesigninwithemailandpassword.myapplication
+package ro.alexmamo.firebasesigninwithemailandpassword.navigation.app
 
-import android.net.wifi.hotspot2.pps.HomeSp
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import ro.alexmamo.firebasesigninwithemailandpassword.myapplication.MyProfile
-import ro.alexmamo.firebasesigninwithemailandpassword.myapplication.SportFacilityDetails
-import ro.alexmamo.firebasesigninwithemailandpassword.myapplication.SportFacilityView
+import ro.alexmamo.firebasesigninwithemailandpassword.myapplication.*
 import ro.alexmamo.firebasesigninwithemailandpassword.presentation.IntWrapper
+import ro.alexmamo.firebasesigninwithemailandpassword.screen.Screen
+import ro.alexmamo.firebasesigninwithemailandpassword.presentation.sportfacilities.SportFacilityViewModel
+import ro.alexmamo.firebasesigninwithemailandpassword.presentation.sportfacilities.TicketTypeViewModel
+import ro.alexmamo.firebasesigninwithemailandpassword.presentation.profile.UserViewModel
 
 @Composable
 fun SetUpNavGraph(
     navController: NavHostController,
-     ttvm:TicketTypeViewModel,
-    spfvm:SportFacilityViewModel,
-    uvm:UserViewModel,
+    ttvm: TicketTypeViewModel,
+    spfvm: SportFacilityViewModel,
+    uvm: UserViewModel,
     boughtTicketTypeId:IntWrapper
 ){
     NavHost(

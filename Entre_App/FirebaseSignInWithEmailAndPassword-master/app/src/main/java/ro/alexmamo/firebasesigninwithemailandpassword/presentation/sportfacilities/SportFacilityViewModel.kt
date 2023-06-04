@@ -1,4 +1,4 @@
-package ro.alexmamo.firebasesigninwithemailandpassword.myapplication
+package ro.alexmamo.firebasesigninwithemailandpassword.presentation.sportfacilities
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -7,6 +7,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ro.alexmamo.firebasesigninwithemailandpassword.apiservice.APIService
+import ro.alexmamo.firebasesigninwithemailandpassword.apiservice.SportFacility
 
 class SportFacilityViewModel: ViewModel() {
     private val _sportFacilityList = mutableStateListOf<SportFacility>()

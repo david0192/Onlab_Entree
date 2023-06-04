@@ -1,26 +1,20 @@
 package ro.alexmamo.firebasesigninwithemailandpassword.myapplication
 
 import android.app.Activity
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
-import com.google.firebase.auth.FirebaseAuth
 import com.razorpay.Checkout
 import org.json.JSONObject
 import ro.alexmamo.firebasesigninwithemailandpassword.presentation.IntWrapper
-import ro.alexmamo.firebasesigninwithemailandpassword.presentation.MainActivity
+import ro.alexmamo.firebasesigninwithemailandpassword.presentation.sportfacilities.TicketTypeViewModel
 
 @Composable
 fun CheckoutScreen(
     ticketTypeId: Int?,
     amount:Int?,
     navController: NavController,
-    ttvm:TicketTypeViewModel,
+    ttvm: TicketTypeViewModel,
     boughtTicketTypeId:IntWrapper
 ) {
     val amount = amount?.times(100)

@@ -1,29 +1,23 @@
-package ro.alexmamo.firebasesigninwithemailandpassword.navigation
+package ro.alexmamo.firebasesigninwithemailandpassword.navigation.signin
 
-import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.launch
-import ro.alexmamo.firebasesigninwithemailandpassword.myapplication.SportFacilityViewModel
-import ro.alexmamo.firebasesigninwithemailandpassword.myapplication.TicketTypeViewModel
-import ro.alexmamo.firebasesigninwithemailandpassword.myapplication.User
-import ro.alexmamo.firebasesigninwithemailandpassword.myapplication.UserViewModel
+import ro.alexmamo.firebasesigninwithemailandpassword.apiservice.User
+import ro.alexmamo.firebasesigninwithemailandpassword.presentation.sportfacilities.SportFacilityViewModel
+import ro.alexmamo.firebasesigninwithemailandpassword.presentation.sportfacilities.TicketTypeViewModel
+import ro.alexmamo.firebasesigninwithemailandpassword.presentation.profile.UserViewModel
 import ro.alexmamo.firebasesigninwithemailandpassword.navigation.Screen.*
 import ro.alexmamo.firebasesigninwithemailandpassword.myapplication.HomeScreen
-import ro.alexmamo.firebasesigninwithemailandpassword.myapplication.Screen
 import ro.alexmamo.firebasesigninwithemailandpassword.presentation.IntWrapper
 import ro.alexmamo.firebasesigninwithemailandpassword.presentation.forgot_password.ForgotPasswordScreen
-import ro.alexmamo.firebasesigninwithemailandpassword.presentation.profile.ProfileScreen
 import ro.alexmamo.firebasesigninwithemailandpassword.presentation.sign_in.SignInScreen
 import ro.alexmamo.firebasesigninwithemailandpassword.presentation.sign_up.SignUpScreen
 import ro.alexmamo.firebasesigninwithemailandpassword.presentation.verify_email.VerifyEmailScreen
@@ -33,10 +27,9 @@ import ro.alexmamo.firebasesigninwithemailandpassword.presentation.verify_email.
 @ExperimentalComposeUiApi
 fun NavGraph(
     navController: NavHostController,
-    myNavController:NavHostController,
-     spfvm:SportFacilityViewModel,
-     ttvm:TicketTypeViewModel,
-     uvm:UserViewModel,
+    spfvm: SportFacilityViewModel,
+    ttvm: TicketTypeViewModel,
+    uvm: UserViewModel,
     boughtTicketTypeId:IntWrapper
 ) {
     AnimatedNavHost(
@@ -80,7 +73,7 @@ fun NavGraph(
         ) {
             VerifyEmailScreen(
                 navigateToProfileScreen = {
-                    val adduser:User=User(email=FirebaseAuth.getInstance().currentUser?.email , role="Guest")
+                    val adduser: User =User(email=FirebaseAuth.getInstance().currentUser?.email , role="Guest")
 
 
                      uvm.addGuestUser(adduser)
@@ -95,7 +88,7 @@ fun NavGraph(
         composable(
             route = ProfileScreen.route
         ) {
-            HomeScreen(navcontroller = myNavController, sportFacilityViewModel = spfvm, ticketTypeViewModel = ttvm, userViewModel = uvm, boughtTicketTypeId=boughtTicketTypeId)
+            HomeScreen(navcontroller = rememberNavController(), sportFacilityViewModel = spfvm, ticketTypeViewModel = ttvm, userViewModel = uvm, boughtTicketTypeId=boughtTicketTypeId)
         }
     }
 }
