@@ -35,7 +35,6 @@ fun SignInContent(
     signIn: (email: String, password: String) -> Unit,
     navigateToForgotPasswordScreen: () -> Unit,
     navigateToSignUpScreen: () -> Unit
-    
 ) {
     var email by rememberSaveable(
         stateSaver = TextFieldValue.Saver

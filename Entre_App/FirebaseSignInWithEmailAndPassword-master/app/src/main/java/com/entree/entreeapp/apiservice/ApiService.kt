@@ -1,11 +1,14 @@
 package com.entree.entreeapp.apiservice
 
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+
 
 data class User(
     var email: String?,
@@ -43,6 +46,9 @@ interface APIService {
     @GET("tickets/{email}")
     suspend fun getTicketsByEmail(@Path("email") email: String?): List<Ticket>
 
+    @GET("users/role/{email}")
+    suspend fun getRoleByEmail(@Path("email") email: String?): String?
+
     @POST("users")
     suspend fun AddGuestUser(@Body user: User)
 
@@ -51,11 +57,14 @@ interface APIService {
 
     companion object {
         var apiService: APIService? = null
+        var gson: Gson = GsonBuilder()
+            .setLenient()
+            .create()
         fun getInstance(): APIService {
             if (apiService == null) {
                 apiService = Retrofit.Builder()
                     .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(gson))
                     .build().create(APIService::class.java)
             }
             return apiService!!

@@ -1,5 +1,6 @@
 package com.entree.entreeapp.data.repository
 
+import com.entree.entreeapp.apiservice.APIService
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
 import kotlinx.coroutines.CoroutineScope
@@ -13,12 +14,25 @@ import com.entree.entreeapp.domain.model.Response.Success
 import com.entree.entreeapp.domain.repository.*
 import javax.inject.Inject
 import javax.inject.Singleton
+import android.content.Context
+import androidx.compose.runtime.mutableStateOf
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.preferencesDataStore
+import com.entree.entreeapp.FirebaseSignInWithEmailAndPasswordApp
+import com.entree.entreeapp.data_key_value_store.DataKeyValueStore
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.collect
 
 @Singleton
 class AuthRepositoryImpl @Inject constructor(
-    private val auth: FirebaseAuth
+    private val auth: FirebaseAuth,
+    private val context: Context
 ) : AuthRepository {
     override val currentUser get() = auth.currentUser
+    private val dataKeyValueStore: DataKeyValueStore = DataKeyValueStore(context)
 
     override suspend fun firebaseSignUpWithEmailAndPassword(
         email: String, password: String
@@ -89,4 +103,32 @@ class AuthRepositoryImpl @Inject constructor(
             auth.removeAuthStateListener(authStateListener)
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), auth.currentUser == null)
+
+    override suspend fun getRoleByEmail(email: String?): RoleResponse{
+        val apiService = APIService.getInstance()
+        return try {
+            var role = apiService.getRoleByEmail(email)
+            val coroutineScope = CoroutineScope(Dispatchers.Default)
+            val result = coroutineScope.async {
+                if (role != null) {
+                    dataKeyValueStore.updateRole(role.toString())
+                } else {
+                    dataKeyValueStore.updateRole("")
+                }
+            }
+            val updateResult = result.await()
+
+            Success(true)
+        } catch (e: Exception) {
+            Failure(e)
+        }
+    }
+
+    override suspend fun getAuthorizationRole(): String {
+        var roleResult: String="";
+        dataKeyValueStore.getRole().collect { role ->
+            roleResult = role ?: ""
+        }
+        return roleResult
+    }
 }

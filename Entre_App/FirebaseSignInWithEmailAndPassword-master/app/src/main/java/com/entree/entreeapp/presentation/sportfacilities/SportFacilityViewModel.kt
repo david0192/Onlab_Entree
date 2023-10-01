@@ -16,16 +16,15 @@ class SportFacilityViewModel: ViewModel() {
     val sportFacilityList: List<SportFacility>
         get() = _sportFacilityList
 
-    fun getSportFacilityList() {
-        viewModelScope.launch {
+    suspend fun getSportFacilityList() {
             val apiService = APIService.getInstance()
             try {
+                errorMessage=""
                 _sportFacilityList.clear()
                 _sportFacilityList.addAll(apiService.getSportFacilities())
 
             } catch (e: Exception) {
                 errorMessage = e.message.toString()
             }
-        }
     }
 }

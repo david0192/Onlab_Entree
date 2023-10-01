@@ -1,19 +1,23 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
 
 namespace EntreeAPI.Entities
 {
-    public class User
+    public partial class User
     {
-        [Key]
+        public User()
+        {
+            Admins = new HashSet<Admin>();
+            Employees = new HashSet<Employee>();
+            Guests = new HashSet<Guest>();
+        }
+
         public int Id { get; set; }
-        
-        [Required]
-        public string Email { get; set; }
+        public string Email { get; set; } = null!;
+        public string Role { get; set; } = null!;
 
-        [Required]
-        public string Role { get; set; }
-
-        public Guest Guest { get; set; }
-
+        public virtual ICollection<Admin> Admins { get; set; }
+        public virtual ICollection<Employee> Employees { get; set; }
+        public virtual ICollection<Guest> Guests { get; set; }
     }
 }

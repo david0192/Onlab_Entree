@@ -34,7 +34,6 @@ namespace EntreeAPI.Controllers
             var user= _context.Users.Where(u=>u.Email==userDTO.Email).FirstOrDefault();
             if (user==null)
             {
-
                 var newuser = new User
                 {
                     Email = userDTO.Email,
@@ -51,16 +50,26 @@ namespace EntreeAPI.Controllers
                         User = newuser
                     };
                     _context.Guests.Add(guest);
-
-                    newuser.Guest = guest;
                 }
-
-               
 
                 await _context.SaveChangesAsync();
             }
+        }
 
+        [Route("role/{email}")]
+        [HttpGet]
+        public async Task<ActionResult<string>> GetRoleByEmail(string email)
+        {
+            var user = await _context.Users.Where(u => u.Email == email).FirstOrDefaultAsync();
+
+            if (user is not null)
+            {
+                return user.Role;
+            }
+            else
+            {
+                return "";
+            }
         }
     }
-
 }

@@ -1,22 +1,22 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
 
 namespace EntreeAPI.Entities
 {
-    public class Guest
+    public partial class Guest
     {
-        [Key]
+        public Guest()
+        {
+            Tickets = new HashSet<Ticket>();
+        }
+
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Address { get; set; }
+        public string? Name { get; set; }
+        public string? Address { get; set; }
+        public string? IdCardNumber { get; set; }
+        public int UserId { get; set; }
 
-        public string IdCardNumber { get; set; }
-
-        ///Todo:Photo eltárolása
-        [Required]
-        public User User { get; set; }
-        [Required]
-        public int userId { get; set; }
-
-        public ICollection<Ticket> Tickets { get; set; }
+        public virtual User User { get; set; } = null!;
+        public virtual ICollection<Ticket> Tickets { get; set; }
     }
 }

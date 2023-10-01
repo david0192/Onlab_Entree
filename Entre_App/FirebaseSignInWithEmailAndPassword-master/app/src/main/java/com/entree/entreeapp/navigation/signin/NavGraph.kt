@@ -1,10 +1,13 @@
 package com.entree.entreeapp.navigation.signin
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -16,12 +19,17 @@ import com.entree.entreeapp.presentation.sportfacilities.TicketTypeViewModel
 import com.entree.entreeapp.presentation.profile.UserViewModel
 import com.entree.entreeapp.navigation.Screen.*
 import com.entree.entreeapp.presentation.IntWrapper
+import com.entree.entreeapp.presentation.admin_site.AdminScreen
 import com.entree.entreeapp.presentation.forgot_password.ForgotPasswordScreen
 import com.entree.entreeapp.presentation.home.HomeScreen
 import com.entree.entreeapp.presentation.sign_in.SignInScreen
 import com.entree.entreeapp.presentation.sign_up.SignUpScreen
 import com.entree.entreeapp.presentation.verify_email.VerifyEmailScreen
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 @ExperimentalAnimationApi
 @ExperimentalComposeUiApi
@@ -73,13 +81,19 @@ fun NavGraph(
         ) {
             VerifyEmailScreen(
                 navigateToProfileScreen = {
-                    val adduser: User =User(email=FirebaseAuth.getInstance().currentUser?.email , role="Guest")
+                    val adduser: User = User(email=FirebaseAuth.getInstance().currentUser?.email , role="Guest")
 
-
-                     uvm.addGuestUser(adduser)
-                    navController.navigate(ProfileScreen.route) {
-                        popUpTo(navController.graph.id) {
-                            inclusive = true
+                    CoroutineScope(Dispatchers.Default).launch {
+                        uvm.addGuestUser(adduser)
+                        if(uvm.errorMessage.isEmpty()){
+                            navController.navigate(ProfileScreen.route) {
+                                popUpTo(navController.graph.id) {
+                                    inclusive = true
+                                }
+                            }
+                        }
+                        else{
+                            //Todo: Navigate to unsuccessfull sign up
                         }
                     }
                 }
@@ -89,6 +103,12 @@ fun NavGraph(
             route = ProfileScreen.route
         ) {
             HomeScreen(navcontroller = rememberNavController(), sportFacilityViewModel = spfvm, ticketTypeViewModel = ttvm, userViewModel = uvm, boughtTicketTypeId=boughtTicketTypeId)
+        }
+
+        composable(
+            route = AdminScreen.route
+        ) {
+            AdminScreen()
         }
     }
 }

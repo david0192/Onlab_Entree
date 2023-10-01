@@ -36,12 +36,9 @@ namespace EntreeAPI.Controllers
 
         public async Task<ActionResult<IEnumerable<TicketTypeDTO>>> GetTicketTypesByIdAndCatId(int id, int catId)
         {
-
-
             var tickettypes = await _mapper.ProjectTo<TicketTypeDTO>(_context.TicketTypes.Where(t => t.SportFascilityId == id && t.CategoryId == catId)).ToListAsync();
 
             return Ok(tickettypes);
-
         }
     }
 }

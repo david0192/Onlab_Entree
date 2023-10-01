@@ -1,16 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
 
 namespace EntreeAPI.Entities
 {
-    public class GroupClassDate
+    public partial class GroupClassDate
     {
-        [Key]
         public int Id { get; set; }
-
         public int GroupClassId { get; set; }
-        public GroupClass GroupClass { get; set; }
-
         public DateTime Date { get; set; }
 
+        public virtual GroupClass GroupClass { get; set; } = null!;
     }
 }

@@ -1,8 +1,7 @@
 package com.entree.entreeapp.screen
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.*
 import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class BottomBarScreen(
@@ -12,13 +11,13 @@ sealed class BottomBarScreen(
 ) {
     object Home : BottomBarScreen(
         route = "home_sportfacilities",
-        title = "home_sportfacilities",
-        icon = Icons.Default.Home
+        title = "Edzőtermek",
+        icon = Icons.Default.SportsMartialArts
     )
 
     object Profile : BottomBarScreen(
         route = "profile",
-        title = "profile",
+        title = "Fiókom",
         icon = Icons.Default.Person
     )
 

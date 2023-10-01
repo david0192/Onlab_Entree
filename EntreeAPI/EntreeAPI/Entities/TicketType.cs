@@ -1,22 +1,23 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
 
 namespace EntreeAPI.Entities
 {
-    public class TicketType
+    public partial class TicketType
     {
-        [Key]
+        public TicketType()
+        {
+            Tickets = new HashSet<Ticket>();
+        }
+
         public int Id { get; set; }
-        [Required]
-        public string Name { get; set; }
-        [Required]
+        public string Name { get; set; } = null!;
         public int Price { get; set; }
-
         public int SportFascilityId { get; set; }
-
-        public SportFacility SportFacility { get; set; }
-
         public int CategoryId { get; set; }
 
-        public TicketCategory Category { get; set; }
+        public virtual TicketCategory Category { get; set; } = null!;
+        public virtual SportFacility SportFascility { get; set; } = null!;
+        public virtual ICollection<Ticket> Tickets { get; set; }
     }
 }

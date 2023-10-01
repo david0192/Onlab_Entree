@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EntreeAPI.Entities;
+using EntreeAPI.Enums;
 using EntreeAPI.Migrations;
 using EntreeAPI.Models;
 using Microsoft.AspNetCore.Http;
@@ -22,21 +23,11 @@ namespace EntreeAPI.Controllers
             _context = context;
         }
 
-        // GET: api/tickettypes/id
-        [Route("api/tickettypes/{id}")]
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<TicketTypeDTO>>> GetTicketTypeById(int id)
-        {
-            var tickettypes = await _mapper.ProjectTo<TicketTypeDTO>(_context.TicketTypes.Where(t => t.Id == id)).ToListAsync();
-
-            return Ok(tickettypes);
-        }
-
         [Route("api/tickets/{email}")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TicketDTO>>> GetTicketsByEmail(string email)
         {
-            var userquery = await _context.Users.Where(u => u.Email == email).Include(u => u.Guest).FirstOrDefaultAsync();
+            var userquery = await _context.Users.Where(u => u.Email == email).FirstOrDefaultAsync();
 
             if (userquery == null)
             {
@@ -44,20 +35,21 @@ namespace EntreeAPI.Controllers
             }
             else
             {
-                if (userquery.Role != "Guest")
+                if (userquery.Role != Roles.Guest.ToString())
                 {
                     return null;
                 }
                 else
                 {
-                    if (userquery.Guest == null)
+                    var guest = await _context.Guests.Where(g => g.UserId == userquery.Id).FirstOrDefaultAsync();
+                    if (guest == null)
                     {
                         throw new ArgumentException("Guest nem lehet null!");
                     }
                     else
                     {
-                        var guestId = userquery.Guest.Id;
-                        var ticketlistquery = await _mapper.ProjectTo<TicketDTO>(_context.Tickets.Where(t => t.GuestId == guestId)).ToListAsync();
+                        var guestId = guest.Id;
+                        var ticketlistquery = await _mapper.ProjectTo<TicketDTO>(_context.Tickets.Include(t => t.TicketType).Where(t => t.GuestId == guestId)).ToListAsync();
                         return Ok(ticketlistquery);
                     }
                 }
@@ -71,20 +63,21 @@ namespace EntreeAPI.Controllers
         {
             if (ticketTypeId != null)
             {
-                var userquery = await _context.Users.Where(u => u.Email == email).Include(u => u.Guest).FirstOrDefaultAsync();
+                var userquery = await _context.Users.Where(u => u.Email == email).FirstOrDefaultAsync();
 
                 if (userquery != null)
                 {
-                    if (userquery.Role == "Guest" && userquery.Guest != null)
+                    var guest = await _context.Guests.Where(g => g.UserId == userquery.Id).FirstOrDefaultAsync();
+
+                    if (userquery.Role == Roles.Guest.ToString() && guest != null)
                     {
-                        var guest = userquery.Guest;
-                        Ticket newticket = new Ticket() { TicketTypeId =(int)ticketTypeId, GuestId = guest.Id };
+                        Ticket newticket = new Ticket() { TicketTypeId = (int)ticketTypeId, GuestId = guest.Id };
                         var categoryId = await _context.TicketTypes.Where(x => x.Id == ticketTypeId).Select(x => x.CategoryId).FirstOrDefaultAsync();
                         if (categoryId == 2)
                         {
-                            var tickets=await _context.Tickets.Where(x=>x.GuestId==guest.Id).Include(x=>x.Type).ToListAsync();
-                            var guestsTicketTypes=tickets.Select(x=>x.Type).ToList();
-                            foreach(var type in guestsTicketTypes)
+                            var tickets = await _context.Tickets.Where(x => x.GuestId == guest.Id).Include(x => x.TicketType).ToListAsync();
+                            var guestsTicketTypes = tickets.Select(x => x.TicketType).ToList();
+                            foreach (var type in guestsTicketTypes)
                             {
                                 if (type.CategoryId == 2)
                                 {
@@ -97,16 +90,9 @@ namespace EntreeAPI.Controllers
 
                         await _context.Tickets.AddAsync(newticket);
                         await _context.SaveChangesAsync();
-
                     }
-
                 }
             }
-            
-            
-
         }
-
-
     }
 }

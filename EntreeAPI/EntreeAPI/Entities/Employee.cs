@@ -1,20 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
 
 namespace EntreeAPI.Entities
 {
-    public class Employee
+    public partial class Employee
     {
-        [Key]
         public int Id { get; set; }
-        [Required]
-        public string Name { get; set; }
-        [Required]
-        public string Address { get; set; }
+        public string Name { get; set; } = null!;
+        public string Address { get; set; } = null!;
+        public string IdCardNumber { get; set; } = null!;
+        public int UserId { get; set; }
 
-        [Required]
-        public string IdCardNumber { get; set; }
-
-        ///Todo:Photo eltárolása
-        public User User { get; set; }
+        public virtual User User { get; set; } = null!;
     }
 }
