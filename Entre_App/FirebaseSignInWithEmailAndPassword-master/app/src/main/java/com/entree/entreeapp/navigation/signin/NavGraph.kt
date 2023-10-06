@@ -24,6 +24,7 @@ import com.entree.entreeapp.presentation.forgot_password.ForgotPasswordScreen
 import com.entree.entreeapp.presentation.home.HomeScreen
 import com.entree.entreeapp.presentation.sign_in.SignInScreen
 import com.entree.entreeapp.presentation.sign_up.SignUpScreen
+import com.entree.entreeapp.presentation.start_destination.StartScreen
 import com.entree.entreeapp.presentation.verify_email.VerifyEmailScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,10 +43,15 @@ fun NavGraph(
 ) {
     AnimatedNavHost(
         navController = navController,
-        startDestination = SignInScreen.route,
+        startDestination = StartScreen.route,
         enterTransition = {EnterTransition.None },
         exitTransition = { ExitTransition.None }
     ) {
+        composable(
+            route = StartScreen.route
+        ) {
+            StartScreen()
+        }
         composable(
             route = SignInScreen.route
         ) {

@@ -5,9 +5,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.tasks.await
 import com.entree.entreeapp.domain.model.Response.Failure
 import com.entree.entreeapp.domain.model.Response.Success
@@ -24,7 +21,7 @@ import com.entree.entreeapp.FirebaseSignInWithEmailAndPasswordApp
 import com.entree.entreeapp.data_key_value_store.DataKeyValueStore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.*
 
 @Singleton
 class AuthRepositoryImpl @Inject constructor(
@@ -107,16 +104,16 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun getRoleByEmail(email: String?): RoleResponse{
         val apiService = APIService.getInstance()
         return try {
-            var role = apiService.getRoleByEmail(email)
+            var role:String? = apiService.getRoleByEmail(email)
             val coroutineScope = CoroutineScope(Dispatchers.Default)
             val result = coroutineScope.async {
                 if (role != null) {
-                    dataKeyValueStore.updateRole(role.toString())
+                    dataKeyValueStore.updateRole(role)
                 } else {
                     dataKeyValueStore.updateRole("")
                 }
             }
-            val updateResult = result.await()
+            result.await()
 
             Success(true)
         } catch (e: Exception) {
@@ -125,10 +122,6 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getAuthorizationRole(): String {
-        var roleResult: String="";
-        dataKeyValueStore.getRole().collect { role ->
-            roleResult = role ?: ""
-        }
-        return roleResult
+        return dataKeyValueStore.getUserRole().firstOrNull() ?: ""
     }
 }

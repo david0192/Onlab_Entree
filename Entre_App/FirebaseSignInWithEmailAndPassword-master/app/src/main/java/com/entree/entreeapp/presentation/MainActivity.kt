@@ -7,9 +7,17 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -62,19 +70,28 @@ class MainActivity : ComponentActivity(), PaymentResultListener {
     @Composable
     private fun AuthState() {
         val isUserSignedOut = viewModel.getAuthState().collectAsState().value
-        var isLoading by remember { mutableStateOf(false) }
-        var role: String by mutableStateOf("")
+        var isLoading by remember { mutableStateOf(true) }
+        var role: String by remember { mutableStateOf("") }
         if (isUserSignedOut) {
             NavigateToSignInScreen()
-        } else {
+        }
+        else {
             if (viewModel.isEmailVerified) {
-                isLoading=true
-                CoroutineScope(Dispatchers.Default).launch {
+                LaunchedEffect(true) {
+                    isLoading = true
                     role = viewModel.getRole()
-                    isLoading=false
+                    isLoading = false
                 }
                 if(isLoading){
-                    Text("Betöltés...")
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        CircularProgressIndicator(
+                            color = Color(0xff91a4fc),
+                            modifier = Modifier.size(32.dp),
+                        )
+                    }
                 }
                 else{
                     if(!role.isNullOrEmpty()){
@@ -94,7 +111,6 @@ class MainActivity : ComponentActivity(), PaymentResultListener {
                         NavigateToProfileScreen()
                     }
                 }
-
             } else {
                 NavigateToVerifyEmailScreen()
             }

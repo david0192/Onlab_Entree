@@ -19,12 +19,15 @@ class DataKeyValueStore (val context: Context){
 
     suspend fun updateRole(value: String){
         context.dataStore.edit{ user_data ->
-            user_data[role] = value
+            user_data[PreferenceKeys.role] = value
         }
     }
 
-    fun getRole(): Flow<String> {
-        return context.dataStore.data.map {  preferences ->
-            preferences[role] ?: "" }
+    fun getUserRole(): Flow<String?> {
+        return context.dataStore.data
+            .map { preferences ->
+                preferences[PreferenceKeys.role]
+            }
     }
+
 }
