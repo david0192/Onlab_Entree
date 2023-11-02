@@ -8,8 +8,8 @@ namespace EntreeAPI.Entities
         public SportFacility()
         {
             Admins = new HashSet<Admin>();
-            GroupClasses = new HashSet<GroupClass>();
             TicketTypes = new HashSet<TicketType>();
+            TrainerClasses = new HashSet<TrainerClass>();
             Trainers = new HashSet<Trainer>();
         }
 
@@ -18,8 +18,8 @@ namespace EntreeAPI.Entities
         public string Site { get; set; } = null!;
 
         public virtual ICollection<Admin> Admins { get; set; }
-        public virtual ICollection<GroupClass> GroupClasses { get; set; }
         public virtual ICollection<TicketType> TicketTypes { get; set; }
+        public virtual ICollection<TrainerClass> TrainerClasses { get; set; }
         public virtual ICollection<Trainer> Trainers { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using EntreeAPI.Models;
+using EntreeAPI.Enums;
 
 namespace EntreeAPI.Controllers
 {
@@ -31,19 +32,19 @@ namespace EntreeAPI.Controllers
         [HttpPost]
         public async Task AddGuestUser(UserDTO userDTO)
         {
-            var user= _context.Users.Where(u=>u.Email==userDTO.Email).FirstOrDefault();
-            if (user==null)
+            var user = _context.Users.Where(u => u.Email == userDTO.Email).FirstOrDefault();
+            if (user == null)
             {
                 var newuser = new User
                 {
                     Email = userDTO.Email,
-                    Role = userDTO.Role,
+                    RoleId = userDTO.RoleId,
 
                 };
-  
-                 _context.Users.Add(newuser);
 
-                if (userDTO.Role == "Guest")
+                _context.Users.Add(newuser);
+
+                if (userDTO.RoleId == 1)
                 {
                     var guest = new Guest
                     {
@@ -58,17 +59,17 @@ namespace EntreeAPI.Controllers
 
         [Route("role/{email}")]
         [HttpGet]
-        public async Task<ActionResult<string>> GetRoleByEmail(string email)
+        public async Task<ActionResult<int>> GetRoleIdByEmail(string email)
         {
             var user = await _context.Users.Where(u => u.Email == email).FirstOrDefaultAsync();
 
             if (user is not null)
             {
-                return user.Role;
+                return user.RoleId;
             }
             else
             {
-                return "";
+                return 0;
             }
         }
     }

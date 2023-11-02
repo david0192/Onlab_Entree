@@ -31,13 +31,13 @@ namespace EntreeAPI.Controllers
 
             if (userquery == null)
             {
-                return null;
+                return Ok(null);
             }
             else
             {
-                if (userquery.Role != Roles.Guest.ToString())
+                if (userquery.RoleId != (int)Roles.Guest)
                 {
-                    return null;
+                    return Ok(null);
                 }
                 else
                 {
@@ -69,7 +69,7 @@ namespace EntreeAPI.Controllers
                 {
                     var guest = await _context.Guests.Where(g => g.UserId == userquery.Id).FirstOrDefaultAsync();
 
-                    if (userquery.Role == Roles.Guest.ToString() && guest != null)
+                    if (userquery.RoleId == (int)Roles.Guest && guest != null)
                     {
                         Ticket newticket = new Ticket() { TicketTypeId = (int)ticketTypeId, GuestId = guest.Id };
                         var categoryId = await _context.TicketTypes.Where(x => x.Id == ticketTypeId).Select(x => x.CategoryId).FirstOrDefaultAsync();
@@ -92,6 +92,74 @@ namespace EntreeAPI.Controllers
                         await _context.SaveChangesAsync();
                     }
                 }
+            }
+        }
+
+        [Route("api/tickettypesofsportfacility/{email}")]
+        [HttpGet]
+        public async Task<ActionResult<TicketTypeDTO>> getSportFacilityTicketTypesByAdminEmail(string email)
+        {
+            var user = await _context.Users.Where(u => u.Email == email).FirstOrDefaultAsync();
+
+            if (user is not null)
+            {
+                if (user.RoleId == (int)Roles.Admin)
+                {
+                    var admin = await _context.Admins.Where(a => a.UserId == user.Id).FirstOrDefaultAsync();
+
+                    if (admin is not null)
+                    {
+                        var ticketTypeDTOList = await _mapper.ProjectTo<TicketTypeDTO>(_context.TicketTypes
+                        .Where(t => t.SportFascilityId == admin.SportFacilityId))
+                        .ToListAsync();
+
+                        return Ok(ticketTypeDTOList);
+                    }
+                    else
+                    {
+                        return NoContent();
+                    }
+                }
+                else
+                {
+                    return NoContent();
+                }
+            }
+            else
+            {
+                return NoContent();
+            }
+        }
+
+        [Route("api/tickettypes")]
+        [HttpPost]
+        public async Task AddTicketTypetoSportFacility([FromBody] TicketTypeAddDTO ticketTypeDto)
+        {
+
+        }
+
+        [Route("api/tickettype/{Id}")]
+        [HttpGet]
+        public async Task<ActionResult<TicketTypeDetailsDTO>> getTicketTypeById(int Id)
+        {
+            var ticketType = await _mapper.ProjectTo<TicketTypeDetailsDTO>(_context.TicketTypes.Where(x => x.Id == Id)).FirstOrDefaultAsync();
+
+            if (ticketType is not null)
+            {
+                var categories = await _context.TicketCategories.ToListAsync();
+                
+                if(categories is not null)
+                {
+                    foreach(var category in categories)
+                    {
+                        ticketType.CategoryValues.Add(category.Id, category.Name);
+                    }
+                }
+                return Ok(ticketType);
+            }
+            else
+            {
+                return NoContent();
             }
         }
     }

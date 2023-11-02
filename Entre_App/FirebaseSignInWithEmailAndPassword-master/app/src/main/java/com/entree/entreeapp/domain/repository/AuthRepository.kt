@@ -38,5 +38,5 @@ interface AuthRepository {
 
     suspend fun getRoleByEmail(email: String?): RoleResponse
 
-    suspend fun getAuthorizationRole(): String
+    suspend fun getAuthorizationRole(): Int
 }

@@ -2,8 +2,10 @@
 {
     public enum Roles
     {
-        Guest,
-        Employee,
-        Admin
+        Guest=1,
+        Admin=2,
+        Trainer=3,
+        Employee=4,
+        
     }
 }

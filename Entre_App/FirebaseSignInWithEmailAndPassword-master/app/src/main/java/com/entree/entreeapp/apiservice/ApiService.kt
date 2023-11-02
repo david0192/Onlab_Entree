@@ -4,21 +4,28 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
+import java.util.Date
+import java.util.Dictionary
 
 
 data class User(
     var email: String?,
-    var role: String?,
+    var roleId: Int,
 )
 
 data class SportFacility(
     var id:Int,
     var name: String,
     var site:String
+)
+
+data class SportFacilityDetails(
+    var id:Int,
+    var name: String,
+    var site:String,
+    var ticketTypes:List<TicketType>,
+    var trainers:List<Trainer>
 )
 
 data class TicketType(
@@ -31,7 +38,33 @@ data class Ticket(
     var typeName: String?
 )
 
-const val BASE_URL = "http://192.168.0.17:7111/api/"
+data class Trainer(
+    var id:Int,
+    var name: String
+)
+
+data class SportFacilityStatisticsQuery(
+    var email:String?,
+    var beginTime:Date?,
+    var endTime:Date?
+)
+
+data class SportFacilityStatisticsResult(
+    var revenue:Int,
+    var ticketTypeBuyNumbers:Map<String, Int>,
+)
+
+data class TicketTypeDetails(
+    var id:Int,
+    var name:String,
+    var price:Int,
+    var categoryId: Int,
+    var maxUsages: Int,
+    var validityDays: Int,
+    var categoryValues:Map<Int, String>
+)
+
+const val BASE_URL = "http://192.168.0.25:7111/api/"
 
 interface APIService {
     @GET("users")
@@ -47,13 +80,25 @@ interface APIService {
     suspend fun getTicketsByEmail(@Path("email") email: String?): List<Ticket>
 
     @GET("users/role/{email}")
-    suspend fun getRoleByEmail(@Path("email") email: String?): String?
+    suspend fun getRoleByEmail(@Path("email") email: String?): Int
+
+    @GET("sportfacility/{email}")
+    suspend fun getSportFacilityByAdminEmail(@Path("email") email: String?): SportFacilityDetails
 
     @POST("users")
     suspend fun AddGuestUser(@Body user: User)
 
     @POST("tickettypes/{ticketTypeId}/{email}")
     suspend fun AddTicketToUser(@Path("ticketTypeId") ticketTypeId:Int?, @Path("email")email: String?)
+
+    @POST("sportfacility")
+    suspend fun updateSportFacility(@Body sportFacility: SportFacility)
+
+    @POST("sportFacilityStatistics")
+    suspend fun getSportFacilityStatistics(@Body sportFacilityStatisticsQuery:SportFacilityStatisticsQuery): SportFacilityStatisticsResult
+
+    @GET("tickettype/{Id}")
+    suspend fun getTicketTypeById(@Path("Id")id:Int?): TicketTypeDetails
 
     companion object {
         var apiService: APIService? = null

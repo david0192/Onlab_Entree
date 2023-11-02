@@ -14,13 +14,16 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.firebase.auth.FirebaseAuth
 import com.entree.entreeapp.apiservice.User
+import com.entree.entreeapp.enums.Roles
 import com.entree.entreeapp.presentation.sportfacilities.SportFacilityViewModel
 import com.entree.entreeapp.presentation.sportfacilities.TicketTypeViewModel
 import com.entree.entreeapp.presentation.profile.UserViewModel
 import com.entree.entreeapp.navigation.Screen.*
 import com.entree.entreeapp.presentation.IntWrapper
 import com.entree.entreeapp.presentation.admin_site.AdminScreen
+import com.entree.entreeapp.presentation.admin_site.AdminScreenViewModel
 import com.entree.entreeapp.presentation.forgot_password.ForgotPasswordScreen
+import com.entree.entreeapp.presentation.home.AdminHomeScreen
 import com.entree.entreeapp.presentation.home.HomeScreen
 import com.entree.entreeapp.presentation.sign_in.SignInScreen
 import com.entree.entreeapp.presentation.sign_up.SignUpScreen
@@ -39,6 +42,7 @@ fun NavGraph(
     spfvm: SportFacilityViewModel,
     ttvm: TicketTypeViewModel,
     uvm: UserViewModel,
+    avm:AdminScreenViewModel,
     boughtTicketTypeId:IntWrapper
 ) {
     AnimatedNavHost(
@@ -87,7 +91,7 @@ fun NavGraph(
         ) {
             VerifyEmailScreen(
                 navigateToProfileScreen = {
-                    val adduser: User = User(email=FirebaseAuth.getInstance().currentUser?.email , role="Guest")
+                    val adduser: User = User(email=FirebaseAuth.getInstance().currentUser?.email , roleId= Roles.GUEST.value)
 
                     CoroutineScope(Dispatchers.Default).launch {
                         uvm.addGuestUser(adduser)
@@ -114,7 +118,7 @@ fun NavGraph(
         composable(
             route = AdminScreen.route
         ) {
-            AdminScreen()
+            AdminHomeScreen(avm=avm, navcontroller = rememberNavController())
         }
     }
 }

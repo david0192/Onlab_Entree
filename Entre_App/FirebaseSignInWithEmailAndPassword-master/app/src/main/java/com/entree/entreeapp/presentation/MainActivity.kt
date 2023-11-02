@@ -23,12 +23,14 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.navigation.NavHostController
 import com.entree.entreeapp.data_key_value_store.DataKeyValueStore
+import com.entree.entreeapp.enums.Roles
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import dagger.hilt.android.AndroidEntryPoint
 import com.entree.entreeapp.navigation.Screen.*
 import com.google.firebase.auth.FirebaseAuth
 import com.razorpay.PaymentResultListener
 import com.entree.entreeapp.navigation.signin.NavGraph
+import com.entree.entreeapp.presentation.admin_site.AdminScreenViewModel
 import com.entree.entreeapp.presentation.sportfacilities.SportFacilityViewModel
 import com.entree.entreeapp.presentation.sportfacilities.TicketTypeViewModel
 import com.entree.entreeapp.presentation.profile.UserViewModel
@@ -44,6 +46,7 @@ class MainActivity : ComponentActivity(), PaymentResultListener {
     private lateinit var ttvm: TicketTypeViewModel
     private lateinit var spfvm: SportFacilityViewModel
     private lateinit var uvm: UserViewModel
+    private lateinit var avm: AdminScreenViewModel
     var boughtTicketTypeId = IntWrapper(null)
     private val viewModel by viewModels<MainViewModel>()
 
@@ -55,12 +58,14 @@ class MainActivity : ComponentActivity(), PaymentResultListener {
             ttvm= TicketTypeViewModel()
             spfvm=SportFacilityViewModel()
             uvm=UserViewModel()
+            avm=AdminScreenViewModel()
             NavGraph(
                 navController = navController,
                 spfvm = spfvm,
                 ttvm=ttvm,
                 uvm= uvm,
-                boughtTicketTypeId=boughtTicketTypeId
+                boughtTicketTypeId=boughtTicketTypeId,
+                avm=avm
             )
             AuthState()
         }
@@ -71,7 +76,7 @@ class MainActivity : ComponentActivity(), PaymentResultListener {
     private fun AuthState() {
         val isUserSignedOut = viewModel.getAuthState().collectAsState().value
         var isLoading by remember { mutableStateOf(true) }
-        var role: String by remember { mutableStateOf("") }
+        var roleId: Int by remember { mutableStateOf(0) }
         if (isUserSignedOut) {
             NavigateToSignInScreen()
         }
@@ -79,7 +84,7 @@ class MainActivity : ComponentActivity(), PaymentResultListener {
             if (viewModel.isEmailVerified) {
                 LaunchedEffect(true) {
                     isLoading = true
-                    role = viewModel.getRole()
+                    roleId = viewModel.getRole()
                     isLoading = false
                 }
                 if(isLoading){
@@ -94,21 +99,16 @@ class MainActivity : ComponentActivity(), PaymentResultListener {
                     }
                 }
                 else{
-                    if(!role.isNullOrEmpty()){
-                        when (role) {
-                            "Guest" -> {
-                                NavigateToProfileScreen()
-                            }
-                            "Admin" -> {
-                                NavigateToAdminScreen()
-                            }
-                            else -> {
-                                NavigateToProfileScreen()
-                            }
+                    when (roleId) {
+                        Roles.GUEST.value-> {
+                            NavigateToProfileScreen()
                         }
-                    }
-                    else{
-                        NavigateToProfileScreen()
+                        Roles.ADMIN.value -> {
+                            NavigateToAdminScreen()
+                        }
+                        else -> {
+                            NavigateToProfileScreen()
+                        }
                     }
                 }
             } else {

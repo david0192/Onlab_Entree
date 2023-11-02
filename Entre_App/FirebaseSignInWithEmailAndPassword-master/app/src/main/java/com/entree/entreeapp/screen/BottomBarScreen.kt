@@ -20,6 +20,16 @@ sealed class BottomBarScreen(
         title = "Fiókom",
         icon = Icons.Default.Person
     )
+    object AdminSportFacilityDetails : BottomBarScreen(
+        route = "admin_sportfacility_details",
+        title = "Edzőterem",
+        icon = Icons.Default.SportsMartialArts
+    )
 
+    object AdminStatistics : BottomBarScreen(
+        route = "admin_statistics",
+        title = "Statisztika",
+        icon = Icons.Default.QueryStats
+    )
 
 }

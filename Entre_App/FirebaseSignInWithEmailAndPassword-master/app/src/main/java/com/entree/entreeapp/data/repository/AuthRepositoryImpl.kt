@@ -1,5 +1,6 @@
 package com.entree.entreeapp.data.repository
 
+import android.annotation.SuppressLint
 import com.entree.entreeapp.apiservice.APIService
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
@@ -19,6 +20,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
 import com.entree.entreeapp.FirebaseSignInWithEmailAndPasswordApp
 import com.entree.entreeapp.data_key_value_store.DataKeyValueStore
+import com.entree.entreeapp.enums.Roles
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.*
@@ -101,16 +103,17 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), auth.currentUser == null)
 
+    @SuppressLint("SuspiciousIndentation")
     override suspend fun getRoleByEmail(email: String?): RoleResponse{
         val apiService = APIService.getInstance()
         return try {
-            var role:String? = apiService.getRoleByEmail(email)
+            var roleId:Int = apiService.getRoleByEmail(email)
             val coroutineScope = CoroutineScope(Dispatchers.Default)
             val result = coroutineScope.async {
-                if (role != null) {
-                    dataKeyValueStore.updateRole(role)
+                if (roleId != null) {
+                    dataKeyValueStore.updateRole(roleId)
                 } else {
-                    dataKeyValueStore.updateRole("")
+                    dataKeyValueStore.updateRole(0)
                 }
             }
             result.await()
@@ -121,7 +124,7 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getAuthorizationRole(): String {
-        return dataKeyValueStore.getUserRole().firstOrNull() ?: ""
+    override suspend fun getAuthorizationRole(): Int {
+        return dataKeyValueStore.getUserRole().firstOrNull() ?: 0
     }
 }

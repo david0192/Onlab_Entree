@@ -41,7 +41,6 @@ fun SportFacilityView(vm: SportFacilityViewModel,
 ) {
     var isLoading by remember { mutableStateOf(false) }
     var query by remember { mutableStateOf("") }
-    //val navController = rememberNavController()
     LaunchedEffect(Unit, block = {
         isLoading = true
         vm.getSportFacilityList()
@@ -257,7 +256,7 @@ fun SportFacilityDetails(id:Int?,
                 if (vm.errorMessage.isEmpty()) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
-                            text = "Napijegyek",
+                            text = "Edzés egyénileg",
                             fontSize = 30.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White
@@ -314,121 +313,8 @@ fun SportFacilityDetails(id:Int?,
                                 }
                             }
                         }
-
                         Text(
-                            text = "Bérletek",
-                            fontSize = 30.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White
-                        )
-                        LazyColumn(
-                            modifier = Modifier
-                                .fillMaxHeight()
-                                .weight(1f)
-                        ) {
-                            items(vm.ticketTypeList_Monthly) { ticketType ->
-                                Column {
-                                    Row(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(16.dp),
-                                        horizontalArrangement = Arrangement.SpaceBetween
-                                    ) {
-                                        Box(
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .padding(0.dp, 0.dp, 16.dp, 0.dp)
-                                        ) {
-                                            Row() {
-                                                Column(modifier = Modifier.weight(1f)) {
-                                                    Text(
-                                                        ticketType.name,
-                                                        maxLines = 1,
-                                                        overflow = TextOverflow.Ellipsis,
-                                                        color = Color.White
-                                                    )
-                                                    Text(
-                                                        text = "Ár: " + ticketType.price,
-                                                        maxLines = 1,
-                                                        overflow = TextOverflow.Ellipsis,
-                                                        color = Color.White
-                                                    )
-                                                }
-
-                                                Spacer(modifier = Modifier.width(45.dp))
-                                                Button(
-                                                    onClick = {
-                                                        navcontroller.navigate(route = "checkout/" + ticketType.id + "/" + ticketType.price)
-                                                    },
-                                                    colors = ButtonDefaults.buttonColors(Color.Black),
-                                                    modifier = Modifier.weight(1f)
-                                                ) {
-                                                    Text(text = "Vásárlás", color = Color.White);
-                                                }
-                                            }
-                                        }
-                                    }
-                                    Divider()
-                                }
-                            }
-                        }
-                        Text(
-                            text = "Csoportos Órák",
-                            fontSize = 30.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White
-                        )
-                        LazyColumn(
-                            modifier = Modifier
-                                .fillMaxHeight()
-                                .weight(1f)
-                        ) {
-                            items(vm.ticketTypeList_Group) { ticketType ->
-                                Column {
-                                    Row(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(16.dp),
-                                        horizontalArrangement = Arrangement.SpaceBetween
-                                    ) {
-                                        Box(
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .padding(0.dp, 0.dp, 16.dp, 0.dp)
-                                        ) {
-                                            Row() {
-                                                Column(modifier = Modifier.weight(1f)) {
-                                                    Text(
-                                                        ticketType.name,
-                                                        maxLines = 1,
-                                                        overflow = TextOverflow.Ellipsis,
-                                                        color = Color.White
-                                                    )
-                                                    Text(
-                                                        text = "Ár: " + ticketType.price,
-                                                        maxLines = 1,
-                                                        overflow = TextOverflow.Ellipsis,
-                                                        color = Color.White
-                                                    )
-                                                }
-
-                                                Spacer(modifier = Modifier.width(45.dp))
-                                                Button(onClick = {
-                                                    navcontroller.navigate(route = "checkout/" + ticketType.id + "/" + ticketType.price)
-                                                },
-                                                    colors = ButtonDefaults.buttonColors(Color.Black),
-                                                    modifier = Modifier.weight(1f)) {
-                                                    Text(text = "Vásárlás", color = Color.White);
-                                                }
-                                            }
-                                        }
-                                    }
-                                    Divider()
-                                }
-                            }
-                        }
-                        Text(
-                            text = "Személyi Edzés",
+                            text = "Edzés edzővel",
                             fontSize = 30.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White

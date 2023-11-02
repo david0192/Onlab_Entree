@@ -18,15 +18,16 @@ namespace EntreeAPI.Entities
 
         public virtual DbSet<Admin> Admins { get; set; } = null!;
         public virtual DbSet<Employee> Employees { get; set; } = null!;
-        public virtual DbSet<GroupClass> GroupClasses { get; set; } = null!;
-        public virtual DbSet<GroupClassDate> GroupClassDates { get; set; } = null!;
         public virtual DbSet<Guest> Guests { get; set; } = null!;
+        public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<SportFacility> SportFacilities { get; set; } = null!;
         public virtual DbSet<Ticket> Tickets { get; set; } = null!;
         public virtual DbSet<TicketCategory> TicketCategories { get; set; } = null!;
         public virtual DbSet<TicketType> TicketTypes { get; set; } = null!;
         public virtual DbSet<Trainer> Trainers { get; set; } = null!;
-        public virtual DbSet<TrainerDate> TrainerDates { get; set; } = null!;
+        public virtual DbSet<TrainerClass> TrainerClasses { get; set; } = null!;
+        public virtual DbSet<TrainerClassDate> TrainerClassDates { get; set; } = null!;
+        public virtual DbSet<TrainerClassTicketType> TrainerClassTicketTypes { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -75,28 +76,6 @@ namespace EntreeAPI.Entities
                     .HasForeignKey(d => d.UserId);
             });
 
-            modelBuilder.Entity<GroupClass>(entity =>
-            {
-                entity.HasIndex(e => e.SportFacilityId, "IX_GroupClasses_SportFacilityId");
-
-                entity.Property(e => e.Name).HasMaxLength(50);
-
-                entity.Property(e => e.Tickettype).HasMaxLength(50);
-
-                entity.HasOne(d => d.SportFacility)
-                    .WithMany(p => p.GroupClasses)
-                    .HasForeignKey(d => d.SportFacilityId);
-            });
-
-            modelBuilder.Entity<GroupClassDate>(entity =>
-            {
-                entity.HasIndex(e => e.GroupClassId, "IX_GroupClassDates_GroupClassId");
-
-                entity.HasOne(d => d.GroupClass)
-                    .WithMany(p => p.GroupClassDates)
-                    .HasForeignKey(d => d.GroupClassId);
-            });
-
             modelBuilder.Entity<Guest>(entity =>
             {
                 entity.HasIndex(e => e.UserId, "IX_Guests_UserId");
@@ -110,6 +89,13 @@ namespace EntreeAPI.Entities
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Guests)
                     .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<Role>(entity =>
+            {
+                entity.Property(e => e.RoleName)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<SportFacility>(entity =>
@@ -132,6 +118,11 @@ namespace EntreeAPI.Entities
                 entity.HasOne(d => d.TicketType)
                     .WithMany(p => p.Tickets)
                     .HasForeignKey(d => d.TicketTypeId);
+
+                entity.HasOne(d => d.TrainerClassDate)
+                    .WithMany(p => p.Tickets)
+                    .HasForeignKey(d => d.TrainerClassDateId)
+                    .HasConstraintName("FK_Tickets_TrainerClassDateId");
             });
 
             modelBuilder.Entity<TicketCategory>(entity =>
@@ -167,23 +158,69 @@ namespace EntreeAPI.Entities
                     .HasForeignKey(d => d.SportFacilityId);
             });
 
-            modelBuilder.Entity<TrainerDate>(entity =>
+            modelBuilder.Entity<TrainerClass>(entity =>
             {
-                entity.HasIndex(e => e.TrainerId, "IX_TrainerDates_TrainerId");
+                entity.HasIndex(e => e.SportFacilityId, "IX_GroupClasses_SportFacilityId");
+
+                entity.Property(e => e.Name).HasMaxLength(50);
+
+                entity.HasOne(d => d.SportFacility)
+                    .WithMany(p => p.TrainerClasses)
+                    .HasForeignKey(d => d.SportFacilityId);
+            });
+
+            modelBuilder.Entity<TrainerClassDate>(entity =>
+            {
+                entity.HasIndex(e => e.TrainerClassDateId, "IX_GroupClassDates_GroupClassId");
+
+                entity.HasOne(d => d.TrainerClassDateNavigation)
+                    .WithMany(p => p.TrainerClassDates)
+                    .HasForeignKey(d => d.TrainerClassDateId)
+                    .HasConstraintName("FK_TrainerClassDates_TrainerClasses_TrainerClassId");
 
                 entity.HasOne(d => d.Trainer)
-                    .WithMany(p => p.TrainerDates)
-                    .HasForeignKey(d => d.TrainerId);
+                    .WithMany(p => p.TrainerClassDates)
+                    .HasForeignKey(d => d.TrainerId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__TrainerClassDates_Trainers_TrainerId");
+            });
+
+            modelBuilder.Entity<TrainerClassTicketType>(entity =>
+            {
+                entity.HasKey(e => new { e.TrainerClassId, e.TicketTypeId });
+
+                entity.Property(e => e.GroupClassTicketTypeId).ValueGeneratedOnAdd();
+
+                entity.HasOne(d => d.TicketType)
+                    .WithMany(p => p.TrainerClassTicketTypes)
+                    .HasForeignKey(d => d.TicketTypeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_TicketTypeId");
+
+                entity.HasOne(d => d.TrainerClass)
+                    .WithMany(p => p.TrainerClassTicketTypes)
+                    .HasForeignKey(d => d.TrainerClassId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_TrainerClassId");
             });
 
             modelBuilder.Entity<User>(entity =>
             {
+                entity.HasIndex(e => e.Email, "UQ_Email")
+                    .IsUnique();
+
                 entity.HasIndex(e => e.Email, "UQ__Users__A9D10534EA42E69A")
                     .IsUnique();
 
                 entity.Property(e => e.Email).HasMaxLength(50);
 
-                entity.Property(e => e.Role).HasMaxLength(50);
+                entity.Property(e => e.RoleId).HasDefaultValueSql("((1))");
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.Users)
+                    .HasForeignKey(d => d.RoleId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_User_Role");
             });
 
             OnModelCreatingPartial(modelBuilder);

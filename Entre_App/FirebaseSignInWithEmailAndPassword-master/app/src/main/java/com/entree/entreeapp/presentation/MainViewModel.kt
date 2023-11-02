@@ -22,5 +22,5 @@ class MainViewModel @Inject constructor(
 
     val isEmailVerified get() = repo.currentUser?.isEmailVerified ?: false
 
-    suspend fun getRole() = repo.getAuthorizationRole()
+    suspend fun getRole():Int = repo.getAuthorizationRole()
 }

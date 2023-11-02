@@ -9,8 +9,12 @@ namespace EntreeAPI.Entities
         public int TicketTypeId { get; set; }
         public int GuestId { get; set; }
         public DateTime? ExpirationDate { get; set; }
+        public int? UsageOccasionLeft { get; set; }
+        public int? TrainerClassDateId { get; set; }
+        public DateTime PurchaseDate { get; set; }
 
         public virtual Guest Guest { get; set; } = null!;
         public virtual TicketType TicketType { get; set; } = null!;
+        public virtual TrainerClassDate? TrainerClassDate { get; set; }
     }
 }

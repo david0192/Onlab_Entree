@@ -11,6 +11,7 @@ namespace EntreeAPI.Entities
         public string IdCardNumber { get; set; } = null!;
         public int UserId { get; set; }
         public int SportFacilityId { get; set; }
+
         public virtual SportFacility SportFacility { get; set; } = null!;
         public virtual User User { get; set; } = null!;
     }

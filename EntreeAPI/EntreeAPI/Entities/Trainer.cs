@@ -7,14 +7,15 @@ namespace EntreeAPI.Entities
     {
         public Trainer()
         {
-            TrainerDates = new HashSet<TrainerDate>();
+            TrainerClassDates = new HashSet<TrainerClassDate>();
         }
 
         public int Id { get; set; }
         public string Name { get; set; } = null!;
         public int SportFacilityId { get; set; }
+        public string? Introduction { get; set; }
 
         public virtual SportFacility SportFacility { get; set; } = null!;
-        public virtual ICollection<TrainerDate> TrainerDates { get; set; }
+        public virtual ICollection<TrainerClassDate> TrainerClassDates { get; set; }
     }
 }

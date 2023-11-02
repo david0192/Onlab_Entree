@@ -11,8 +11,12 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.entree.entreeapp.enums.Roles
+import com.entree.entreeapp.navigation.app.AdminSetUpNavGraph
 import com.entree.entreeapp.navigation.app.SetUpNavGraph
 import com.entree.entreeapp.presentation.IntWrapper
+import com.entree.entreeapp.presentation.admin_site.AdminScreen
+import com.entree.entreeapp.presentation.admin_site.AdminScreenViewModel
 import com.entree.entreeapp.screen.BottomBarScreen
 import com.entree.entreeapp.presentation.sportfacilities.SportFacilityViewModel
 import com.entree.entreeapp.presentation.sportfacilities.TicketTypeViewModel
@@ -22,18 +26,37 @@ import com.entree.entreeapp.presentation.profile.UserViewModel
 @Composable
 fun HomeScreen(navcontroller: NavHostController, sportFacilityViewModel: SportFacilityViewModel, ticketTypeViewModel: TicketTypeViewModel, userViewModel: UserViewModel, boughtTicketTypeId:IntWrapper){
     Scaffold(bottomBar = {
-        BottomBar(navController=navcontroller)
+        BottomBar(navController=navcontroller, roleId = Roles.GUEST.value)
     }) {
         SetUpNavGraph(navController = navcontroller, spfvm= sportFacilityViewModel, ttvm= ticketTypeViewModel, uvm=userViewModel, boughtTicketTypeId = boughtTicketTypeId)
     }
 }
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun BottomBar(navController: NavHostController) {
-    val screens = listOf(
-        BottomBarScreen.Home,
-        BottomBarScreen.Profile,
-    )
+fun AdminHomeScreen(navcontroller: NavHostController, avm:AdminScreenViewModel){
+    Scaffold(bottomBar = {
+        BottomBar(navController=navcontroller, roleId = Roles.ADMIN.value)
+    }) {
+        AdminSetUpNavGraph(avm=avm, navController = navcontroller)
+    }
+}
+
+@Composable
+fun BottomBar(navController: NavHostController, roleId:Int) {
+    val screens = if(roleId== Roles.ADMIN.value){
+        listOf(
+            BottomBarScreen.AdminSportFacilityDetails,
+            BottomBarScreen.AdminStatistics,
+        )
+    }
+    else{
+        listOf(
+            BottomBarScreen.Home,
+            BottomBarScreen.Profile,
+        )
+    }
+
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
