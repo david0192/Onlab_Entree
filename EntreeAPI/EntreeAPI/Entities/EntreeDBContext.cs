@@ -71,9 +71,15 @@ namespace EntreeAPI.Entities
 
                 entity.Property(e => e.Name).HasMaxLength(50);
 
+                entity.HasOne(d => d.SportFacility)
+                    .WithMany(p => p.Employees)
+                    .HasForeignKey(d => d.SportFacilityId)
+                    .HasConstraintName("FK_Employees_SportFacility_SportFacilityId");
+
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Employees)
-                    .HasForeignKey(d => d.UserId);
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<Guest>(entity =>
@@ -156,6 +162,11 @@ namespace EntreeAPI.Entities
                 entity.HasOne(d => d.SportFacility)
                     .WithMany(p => p.Trainers)
                     .HasForeignKey(d => d.SportFacilityId);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Trainers)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK_Trainers_User_UserId");
             });
 
             modelBuilder.Entity<TrainerClass>(entity =>
@@ -215,6 +226,8 @@ namespace EntreeAPI.Entities
                 entity.Property(e => e.Email).HasMaxLength(50);
 
                 entity.Property(e => e.RoleId).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.Uid).HasColumnName("UID");
 
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Users)

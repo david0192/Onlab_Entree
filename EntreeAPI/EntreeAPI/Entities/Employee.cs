@@ -9,8 +9,10 @@ namespace EntreeAPI.Entities
         public string Name { get; set; } = null!;
         public string Address { get; set; } = null!;
         public string IdCardNumber { get; set; } = null!;
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
+        public int? SportFacilityId { get; set; }
 
-        public virtual User User { get; set; } = null!;
+        public virtual SportFacility? SportFacility { get; set; }
+        public virtual User? User { get; set; }
     }
 }

@@ -15,8 +15,7 @@ import com.entree.entreeapp.enums.Roles
 import com.entree.entreeapp.navigation.app.AdminSetUpNavGraph
 import com.entree.entreeapp.navigation.app.SetUpNavGraph
 import com.entree.entreeapp.presentation.IntWrapper
-import com.entree.entreeapp.presentation.admin_site.AdminScreen
-import com.entree.entreeapp.presentation.admin_site.AdminScreenViewModel
+import com.entree.entreeapp.presentation.admin_site.AdminSiteViewModel
 import com.entree.entreeapp.screen.BottomBarScreen
 import com.entree.entreeapp.presentation.sportfacilities.SportFacilityViewModel
 import com.entree.entreeapp.presentation.sportfacilities.TicketTypeViewModel
@@ -34,7 +33,7 @@ fun HomeScreen(navcontroller: NavHostController, sportFacilityViewModel: SportFa
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun AdminHomeScreen(navcontroller: NavHostController, avm:AdminScreenViewModel){
+fun AdminHomeScreen(navcontroller: NavHostController, avm:AdminSiteViewModel){
     Scaffold(bottomBar = {
         BottomBar(navController=navcontroller, roleId = Roles.ADMIN.value)
     }) {

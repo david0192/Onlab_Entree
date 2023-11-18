@@ -8,11 +8,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import com.entree.entreeapp.apiservice.APIService
-import com.entree.entreeapp.apiservice.Ticket
-import com.entree.entreeapp.apiservice.TicketType
+import com.entree.entreeapp.models.*
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-
-class TicketTypeViewModel : ViewModel() {
+@HiltViewModel
+class TicketTypeViewModel  @Inject constructor(): ViewModel() {
     private val _ticketTypeListDaily = mutableStateListOf<TicketType>()
     private val _ticketTypeListTrainer = mutableStateListOf<TicketType>()
     private val _ticketsOfGuest= mutableStateListOf<Ticket>()
@@ -39,13 +40,13 @@ class TicketTypeViewModel : ViewModel() {
         }
     }
 
-    fun getTicketsByEmail(email:String?){
+    fun getTicketsByUid(uid:String?){
         viewModelScope.launch {
             val apiService = APIService.getInstance()
             try {
                 errorMessage=""
                 _ticketsOfGuest.clear()
-                _ticketsOfGuest.addAll(apiService.getTicketsByEmail(email))
+                _ticketsOfGuest.addAll(apiService.getTicketsByUid(uid))
 
             } catch (e: Exception) {
                 errorMessage = e.message.toString()
@@ -53,12 +54,12 @@ class TicketTypeViewModel : ViewModel() {
         }
     }
 
-    fun AddTicketToUser(ticketTypeId:Int?, email: String?){
+    fun addTicketToUser(ticketTypeId:Int?, uid: String?){
         val apiService = APIService.getInstance()
         try {
             errorMessage=""
             viewModelScope.launch {
-                apiService.AddTicketToUser(ticketTypeId, email)
+                apiService.addTicketToUser(ticketTypeId, uid)
             }
         } catch (e: Exception) {
             errorMessage = e.message.toString()

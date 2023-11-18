@@ -107,7 +107,7 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun getRoleByEmail(email: String?): RoleResponse{
         val apiService = APIService.getInstance()
         return try {
-            var roleId:Int = apiService.getRoleByEmail(email)
+            var roleId:Int = apiService.getRoleIdByEmail(email)
             val coroutineScope = CoroutineScope(Dispatchers.Default)
             val result = coroutineScope.async {
                 if (roleId != null) {

@@ -6,6 +6,5 @@
         Admin=2,
         Trainer=3,
         Employee=4,
-        
     }
 }

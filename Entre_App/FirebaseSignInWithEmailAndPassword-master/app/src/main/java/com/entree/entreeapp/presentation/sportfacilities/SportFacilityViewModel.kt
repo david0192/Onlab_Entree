@@ -8,9 +8,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import com.entree.entreeapp.apiservice.APIService
-import com.entree.entreeapp.apiservice.SportFacility
+import com.entree.entreeapp.models.*
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class SportFacilityViewModel: ViewModel() {
+@HiltViewModel
+class SportFacilityViewModel @Inject constructor(): ViewModel() {
     private val _sportFacilityList = mutableStateListOf<SportFacility>()
     var errorMessage: String by mutableStateOf("")
     val sportFacilityList: List<SportFacility>

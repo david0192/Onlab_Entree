@@ -87,7 +87,7 @@ private fun CreateInfo(ticketTypeViewModel: TicketTypeViewModel, navcontroller: 
 
     LaunchedEffect(Unit, block = {
         isLoading=true
-        ticketTypeViewModel.getTicketsByEmail(FirebaseAuth.getInstance().currentUser?.email)
+        ticketTypeViewModel.getTicketsByUid(FirebaseAuth.getInstance().currentUser?.uid)
         isLoading=false
     })
 
@@ -177,7 +177,7 @@ private fun CreateInfo(ticketTypeViewModel: TicketTypeViewModel, navcontroller: 
                         onClick = {
                             isLoading = true
                             CoroutineScope(Dispatchers.Default).launch {
-                                ticketTypeViewModel.getTicketsByEmail(FirebaseAuth.getInstance().currentUser?.email)
+                                ticketTypeViewModel.getTicketsByUid(FirebaseAuth.getInstance().currentUser?.uid)
                                 isLoading = false
                             }
                         },

@@ -36,16 +36,16 @@ namespace EntreeAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TicketTypeDTO>>> GetTicketTypesByIdAndCatId(int id, int catId)
         {
-            var tickettypes = await _mapper.ProjectTo<TicketTypeDTO>(_context.TicketTypes.Where(t => t.SportFascilityId == id && t.CategoryId == catId)).ToListAsync();
+            var tickettypes = await _mapper.ProjectTo<TicketTypeDTO>(_context.TicketTypes.Where(t => t.SportFascilityId == id && t.CategoryId == catId && t.IsDeleted == 0)).ToListAsync();
 
             return Ok(tickettypes);
         }
 
-        [Route("api/sportfacility/{email}")]
+        [Route("api/sportfacility/{uid}")]
         [HttpGet]
-        public async Task<ActionResult<SportFacilityDetailsDTO>> getSportFacilityByAdminEmail(string email)
+        public async Task<ActionResult<SportFacilityDetailsDTO>> GetSportFacilityByAdminUid(string uid)
         {
-            var user = await _context.Users.Where(u => u.Email == email).FirstOrDefaultAsync();
+            var user = await _context.Users.Where(u => u.Uid == uid).FirstOrDefaultAsync();
 
             if (user is not null)
             {
@@ -62,7 +62,7 @@ namespace EntreeAPI.Controllers
                         if (sportFacilityDetailsDTO is not null && sportFacilityDetailsDTO.Id != 0)
                         {
                             var ticketTypes = await _mapper.ProjectTo<TicketTypeDTO>(_context.TicketTypes
-                            .Where(t => t.SportFascilityId == admin.SportFacilityId))
+                            .Where(t => t.SportFascilityId == admin.SportFacilityId && t.IsDeleted == 0))
                             .ToListAsync();
 
                             if (ticketTypes is not null)
@@ -98,7 +98,7 @@ namespace EntreeAPI.Controllers
 
         [Route("api/sportfacility")]
         [HttpPost]
-        public async Task updateSportFacility([FromBody] SportFacilityDTO sportFacilityDto)
+        public async Task UpdateSportFacility([FromBody] SportFacilityDTO sportFacilityDto)
         {
             var sportFacility = await _context.SportFacilities.Where(s => s.Id == sportFacilityDto.Id).FirstOrDefaultAsync();
 
@@ -111,10 +111,10 @@ namespace EntreeAPI.Controllers
         }
 
         [Route("api/sportFacilityStatistics")]
-        [HttpPost]
-        public async Task<ActionResult<SportFacilityStatisticsResultDTO>> getSportFacilityStatistics([FromBody] SportFacilityStatisticsQueryDTO sportFacilityStatisticsQuery)
+        [HttpGet]
+        public async Task<ActionResult<SportFacilityStatisticsResultDTO>> GetSportFacilityStatistics(string? uid, DateTime? beginTime, DateTime? endTime)
         {
-            var user = await _context.Users.Where(u => u.Email == sportFacilityStatisticsQuery.Email).FirstOrDefaultAsync();
+            var user = await _context.Users.Where(u => u.Uid == uid).FirstOrDefaultAsync();
 
             if (user is not null)
             {
@@ -139,8 +139,8 @@ namespace EntreeAPI.Controllers
                                 foreach (var ticketType in ticketTypes)
                                 {
                                     var numberOfPurchases = 0;
-                                    var tickets = await _context.Tickets.Where(t => t.TicketTypeId == ticketType.Id && (t.PurchaseDate <= sportFacilityStatisticsQuery.EndTime
-                                    && t.PurchaseDate >= sportFacilityStatisticsQuery.BeginTime) || (sportFacilityStatisticsQuery.EndTime == null && t.PurchaseDate >= sportFacilityStatisticsQuery.BeginTime)).ToListAsync();
+                                    var tickets = await _context.Tickets.Where(t => t.TicketTypeId == ticketType.Id && (t.PurchaseDate <=endTime
+                                    && t.PurchaseDate >= beginTime) || (endTime == null && t.PurchaseDate >=beginTime)).ToListAsync();
                                     foreach (var ticket in tickets)
                                     {
                                         revenue += ticketType.Price;
@@ -153,30 +153,28 @@ namespace EntreeAPI.Controllers
                             }
                             else
                             {
-                                return NoContent();
+                                return Ok(new SportFacilityStatisticsResultDTO());
                             }
                         }
                         else
                         {
-                            return NoContent();
+                            return Ok(new SportFacilityStatisticsResultDTO());
                         }
                     }
                     else
                     {
-                        return NoContent();
+                        return Ok(new SportFacilityStatisticsResultDTO());
                     }
                 }
                 else
                 {
-                    return NoContent();
+                    throw new ArgumentException("Nem Admin!");
                 }
             }
             else
             {
-                return NoContent();
+                throw new ArgumentException("User Id nem lehet null!");
             }
-
-            
         }
     }
 }

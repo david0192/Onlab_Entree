@@ -6,17 +6,13 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.entree.entreeapp.presentation.admin_site.AdminScreen
-import com.entree.entreeapp.presentation.admin_site.AdminScreenViewModel
-import com.entree.entreeapp.presentation.admin_site.StatisticsScreen
-import com.entree.entreeapp.presentation.admin_site.TicketTypeEditDetails
-import com.entree.entreeapp.presentation.sportfacilities.SportFacilityDetails
+import com.entree.entreeapp.presentation.admin_site.*
 import com.entree.entreeapp.screen.Screen
 
 @Composable
 fun AdminSetUpNavGraph(
     navController: NavHostController,
-    avm: AdminScreenViewModel
+    avm: AdminSiteViewModel
 ){
     NavHost(
         navController = navController,
@@ -25,7 +21,7 @@ fun AdminSetUpNavGraph(
         composable(
             route= Screen.AdminSportFacility.route,
         ){
-            AdminScreen(avm = avm, navcontroller = navController)
+            SportFacilityEditScreen(navcontroller = navController)
         }
 
         composable(

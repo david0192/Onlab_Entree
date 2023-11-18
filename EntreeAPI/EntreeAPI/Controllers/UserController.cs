@@ -20,15 +20,6 @@ namespace EntreeAPI.Controllers
             _context = context;
         }
 
-        // GET: api/users
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
-        {
-            var users = await _mapper.ProjectTo<UserDTO>(_context.Users).ToListAsync();
-
-            return Ok(users);
-        }
-
         [HttpPost]
         public async Task AddGuestUser(UserDTO userDTO)
         {
@@ -38,21 +29,18 @@ namespace EntreeAPI.Controllers
                 var newuser = new User
                 {
                     Email = userDTO.Email,
-                    RoleId = userDTO.RoleId,
-
+                    RoleId = (int)Roles.Guest,
+                    Uid=userDTO.Uid,
                 };
 
                 _context.Users.Add(newuser);
 
-                if (userDTO.RoleId == 1)
+                var guest = new Guest
                 {
-                    var guest = new Guest
-                    {
-                        User = newuser
-                    };
-                    _context.Guests.Add(guest);
-                }
+                    User = newuser
+                };
 
+                _context.Guests.Add(guest);
                 await _context.SaveChangesAsync();
             }
         }

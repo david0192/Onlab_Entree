@@ -3,8 +3,6 @@ package com.entree.entreeapp.presentation.admin_site
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -14,20 +12,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Popup
-import androidx.compose.ui.window.PopupProperties
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.entree.entreeapp.apiservice.SportFacility
-import com.entree.entreeapp.apiservice.TicketTypeDetails
+import com.entree.entreeapp.models.*
 import com.entree.entreeapp.components.TopBar
 import com.entree.entreeapp.enums.TicketTypeDetailNavigateType
 import com.entree.entreeapp.presentation.profile.ProfileViewModel
-import com.entree.entreeapp.screen.Screen
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -36,11 +29,11 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterialApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnrememberedMutableState")
 @Composable
-fun TicketTypeEditDetails(viewModel: ProfileViewModel = hiltViewModel(), avm: AdminScreenViewModel, id:Int?, navigateTypeId:Int?){
+fun TicketTypeEditDetails(viewModel: ProfileViewModel = hiltViewModel(), avm: AdminSiteViewModel, id:Int?, navigateTypeId:Int?){
     var isLoading by remember { mutableStateOf(true) }
     LaunchedEffect(Unit, block = {
         isLoading = true
-        avm.getTicketTypeById(id)
+        avm.getTicketTypeById(id, FirebaseAuth.getInstance().currentUser?.uid)
         isLoading = false
     })
 
@@ -70,13 +63,15 @@ fun TicketTypeEditDetails(viewModel: ProfileViewModel = hiltViewModel(), avm: Ad
                 }
             } else {
                 if (avm.errorMessage.isEmpty()) {
-                    var ticketTypeDetails: TicketTypeDetails by remember{ mutableStateOf(TicketTypeDetails(id = avm.ticketTypeDetails.id, name=avm.ticketTypeDetails.name, categoryId = avm.ticketTypeDetails.categoryId, categoryValues = avm.ticketTypeDetails.categoryValues, maxUsages = avm.ticketTypeDetails.maxUsages,
-                        price = avm.ticketTypeDetails.price, validityDays = avm.ticketTypeDetails.validityDays )) }
-                    var inputName:String by remember{ mutableStateOf(avm.ticketTypeDetails.name) }
-                    var inputCategoryId:String by remember{ mutableStateOf(avm.ticketTypeDetails.categoryId.toString()) }
-                    var inputMaxUsages:String by remember{ mutableStateOf(avm.ticketTypeDetails.maxUsages.toString()) }
-                    var inputPrice:String by remember{ mutableStateOf(avm.ticketTypeDetails.price.toString()) }
-                    var inputValidityDays:String by remember{ mutableStateOf(avm.ticketTypeDetails.validityDays.toString()) }
+                        var ticketTypeDetails: TicketTypeDetails by remember{mutableStateOf(
+                                TicketTypeDetails(id = avm.ticketTypeDetails.id, name=avm.ticketTypeDetails.name, categoryId = avm.ticketTypeDetails.categoryId, categoryValues = avm.ticketTypeDetails.categoryValues, maxUsages = avm.ticketTypeDetails.maxUsages,
+                                    price = avm.ticketTypeDetails.price, sportFacilityId = avm.ticketTypeDetails.sportFacilityId, validityDays = avm.ticketTypeDetails.validityDays)
+                        )}
+                        var inputName:String by remember{ mutableStateOf(avm.ticketTypeDetails.name)}
+                        var inputCategoryId:String by remember{ mutableStateOf(avm.ticketTypeDetails.categoryId.toString())}
+                        var inputMaxUsages: String by remember{ mutableStateOf(avm.ticketTypeDetails.maxUsages?.toString() ?: "")}
+                        var inputPrice: String by remember{ mutableStateOf(avm.ticketTypeDetails.price.toString())}
+                        var inputValidityDays: String by remember{ mutableStateOf(avm.ticketTypeDetails.validityDays?.toString() ?: "")}
 
                     Column (modifier= Modifier.padding(10.dp)){
                         Row(){
@@ -103,43 +98,56 @@ fun TicketTypeEditDetails(viewModel: ProfileViewModel = hiltViewModel(), avm: Ad
                                 Text(
                                     text="Kategória:"
                                 )
-                                val options = ticketTypeDetails.categoryValues.values.toList()
+                                val options = ticketTypeDetails.categoryValues.toList()
                                 var expanded by remember { mutableStateOf(false) }
                                 var selectedOptionText by remember { mutableStateOf(ticketTypeDetails.categoryValues.get(ticketTypeDetails.categoryId) ?:"") }
 
-                                ExposedDropdownMenuBox(
-                                    expanded = expanded,
-                                    onExpandedChange = {
-                                        expanded = !expanded
-                                    },
-                                ) {
+                                if(navigateTypeId==TicketTypeDetailNavigateType.VIEW.value){
                                     TextField(
-                                        readOnly = true,
                                         value = selectedOptionText,
-                                        onValueChange = { },
-                                        label = { Text("Kategória") },
-                                        trailingIcon = {
-                                            ExposedDropdownMenuDefaults.TrailingIcon(
-                                                expanded = expanded
-                                            )
+                                        onValueChange = {
                                         },
-                                        colors = ExposedDropdownMenuDefaults.textFieldColors(),
-                                        modifier=Modifier.fillMaxWidth()
+                                        modifier=Modifier.fillMaxWidth(),
+                                        readOnly = (navigateTypeId==TicketTypeDetailNavigateType.VIEW.value)
                                     )
-                                    ExposedDropdownMenu(
+                                }
+                                else{
+                                    ExposedDropdownMenuBox(
                                         expanded = expanded,
-                                        onDismissRequest = {
-                                            expanded = false
-                                        }
+                                        onExpandedChange = {
+                                            expanded = !expanded
+                                        },
                                     ) {
-                                        options.forEach { selectionOption ->
-                                            DropdownMenuItem(
-                                                onClick = {
-                                                    selectedOptionText = selectionOption
-                                                    expanded = false
+                                        TextField(
+                                            readOnly = true,
+                                            value = selectedOptionText,
+                                            onValueChange = {
+                                            },
+                                            label = { Text("Kategória") },
+                                            trailingIcon = {
+                                                ExposedDropdownMenuDefaults.TrailingIcon(
+                                                    expanded = expanded
+                                                )
+                                            },
+                                            colors = ExposedDropdownMenuDefaults.textFieldColors(),
+                                            modifier=Modifier.fillMaxWidth()
+                                        )
+                                        ExposedDropdownMenu(
+                                            expanded = expanded,
+                                            onDismissRequest = {
+                                                expanded = false
+                                            }
+                                        ) {
+                                            options.forEach { selectionOption ->
+                                                DropdownMenuItem(
+                                                    onClick = {
+                                                        selectedOptionText = selectionOption.second
+                                                        ticketTypeDetails.categoryId = selectionOption.first
+                                                        expanded = false
+                                                    }
+                                                ){
+                                                    Text(text = selectionOption.second)
                                                 }
-                                            ){
-                                                Text(text = selectionOption)
                                             }
                                         }
                                     }
@@ -156,7 +164,7 @@ fun TicketTypeEditDetails(viewModel: ProfileViewModel = hiltViewModel(), avm: Ad
                                         if (parsedNumber != null) {
                                             ticketTypeDetails.maxUsages = parsedNumber
                                         } else {
-                                            ticketTypeDetails.maxUsages=0
+                                            ticketTypeDetails.maxUsages= null
                                         }
                                     },
                                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
@@ -194,7 +202,7 @@ fun TicketTypeEditDetails(viewModel: ProfileViewModel = hiltViewModel(), avm: Ad
                                         if (parsedNumber != null) {
                                             ticketTypeDetails.validityDays = parsedNumber
                                         } else {
-                                            ticketTypeDetails.validityDays = 0
+                                            ticketTypeDetails.validityDays = null
                                         }
                                     },
                                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
@@ -206,7 +214,7 @@ fun TicketTypeEditDetails(viewModel: ProfileViewModel = hiltViewModel(), avm: Ad
                                     Button(
                                         onClick = {
                                             CoroutineScope(Dispatchers.Default).launch {
-
+                                                avm.createOrEditTicketType(ticketTypeDetails)
                                             }
                                         },
                                         colors = ButtonDefaults.buttonColors(Color.Black),
@@ -217,6 +225,24 @@ fun TicketTypeEditDetails(viewModel: ProfileViewModel = hiltViewModel(), avm: Ad
                                 }
                             }
                         }
+                    }
+
+                    if(avm.updateSuccessFull){
+                        Snackbar(
+                            modifier = Modifier.padding(16.dp),
+                            content = {
+                                Text("Sikeres módósítás!")
+                            },
+                            action = {
+                                TextButton(
+                                    onClick = {
+                                        avm.updateSuccessFull = false
+                                    }
+                                ) {
+                                    Text("Rendben")
+                                }
+                            }
+                        )
                     }
                 }
                 else{
@@ -231,7 +257,7 @@ fun TicketTypeEditDetails(viewModel: ProfileViewModel = hiltViewModel(), avm: Ad
                 onClick = {
                     isLoading = true
                     CoroutineScope(Dispatchers.Default).launch {
-                        avm.getTicketTypeById(id)
+                        avm.getTicketTypeById(id, FirebaseAuth.getInstance().currentUser?.uid)
                         isLoading = false
                     }
                 },

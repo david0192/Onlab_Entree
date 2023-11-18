@@ -9,5 +9,8 @@ namespace EntreeAPI.Models
 
         [Required]
         public int RoleId { get; set; }
+
+        [Required]
+        public string Uid { get; set; }
     }
 }

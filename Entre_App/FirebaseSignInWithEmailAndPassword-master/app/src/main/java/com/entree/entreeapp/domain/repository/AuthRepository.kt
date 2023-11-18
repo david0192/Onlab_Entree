@@ -36,7 +36,7 @@ interface AuthRepository {
 
     fun getAuthState(viewModelScope: CoroutineScope): AuthStateResponse
 
-    suspend fun getRoleByEmail(email: String?): RoleResponse
+    suspend fun getRoleByEmail(uid: String?): RoleResponse
 
     suspend fun getAuthorizationRole(): Int
 }
