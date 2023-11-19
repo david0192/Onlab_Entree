@@ -1,61 +1,71 @@
 package com.entree.entreeapp.apiservice
-
+import com.entree.entreeapp.models.*
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
+import java.util.Date
+import java.util.Dictionary
 
-data class User(
-    var email: String?,
-    var role: String?,
-)
-
-data class SportFacility(
-    var id:Int,
-    var name: String,
-    var site:String
-)
-
-data class TicketType(
-    var id:Int,
-    var name: String,
-    var price:Int
-)
-
-data class Ticket(
-    var typeName: String?
-)
-
-const val BASE_URL = "http://192.168.83.1:7111/api/"
+const val BASE_URL = "http://192.168.0.29:7111/api/"
 
 interface APIService {
-    @GET("users")
-    suspend fun getUsers(): List<User>
-
     @GET("sportfacilities")
     suspend fun getSportFacilities(): List<SportFacility>
 
     @GET("sportfacilities/{id}/{catId}")
     suspend fun getSportFacilitiesByIdCatId(@Path("id") id: Int?, @Path("catId") catId:Int): List<TicketType>
 
-    @GET("tickets/{email}")
-    suspend fun getTicketsByEmail(@Path("email") email: String?): List<Ticket>
+    @GET("tickets/{uid}")
+    suspend fun getTicketsByUid(@Path("uid") uid: String?): List<Ticket>
+
+    @GET("users/role/{email}")
+    suspend fun getRoleIdByEmail(@Path("email") email: String?): Int
+
+    @GET("sportfacility/{uid}")
+    suspend fun getSportFacilityByAdminUid(@Path("uid") uid: String?): SportFacilityDetails
 
     @POST("users")
-    suspend fun AddGuestUser(@Body user: User)
+    suspend fun addGuestUser(@Body user: User)
 
-    @POST("tickettypes/{ticketTypeId}/{email}")
-    suspend fun AddTicketToUser(@Path("ticketTypeId") ticketTypeId:Int?, @Path("email")email: String?)
+    @POST("tickettypes/{ticketTypeId}/{uid}")
+    suspend fun addTicketToUser(@Path("ticketTypeId") ticketTypeId:Int?, @Path("uid")uid: String?)
+
+    @POST("sportfacility")
+    suspend fun updateSportFacility(@Body sportFacility: SportFacility)
+
+    @POST("ticketType")
+    suspend fun createOrEditTicketType(@Body ticketTypeDetails: TicketTypeDetails)
+
+    @GET("sportFacilityStatistics")
+    suspend fun getSportFacilityStatistics(@Query("uid") uid: String?, @Query("beginTime") beginTime: String?, @Query("endTime") endTime: String?): SportFacilityStatisticsResult
+
+    @GET("tickettype/{Id}/{uid}")
+    suspend fun getTicketTypeById(@Path("Id")id:Int?, @Path("uid")uid: String?): TicketTypeDetails
+
+    @DELETE("ticketType/{id}")
+    suspend fun deleteTicketType(@Path("id")id:Int?)
+
+    @GET("trainer/{Id}/{uid}")
+    suspend fun getTrainerById(@Path("Id")id:Int?, @Path("uid")uid: String?): TrainerDetails
+
+    @POST("trainer")
+    suspend fun createOrEditTrainer(@Body trainerDetails: TrainerDetails)
+
+    @DELETE("trainer/{id}")
+    suspend fun deleteTrainer(@Path("id")id:Int?)
 
     companion object {
         var apiService: APIService? = null
+        var gson: Gson = GsonBuilder()
+            .setLenient()
+            .create()
         fun getInstance(): APIService {
             if (apiService == null) {
                 apiService = Retrofit.Builder()
                     .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(gson))
                     .build().create(APIService::class.java)
             }
             return apiService!!

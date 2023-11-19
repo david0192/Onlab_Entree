@@ -1,20 +1,24 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
 
 namespace EntreeAPI.Entities
 {
-    public class Trainer
+    public partial class Trainer
     {
-        [Key]
+        public Trainer()
+        {
+            TrainerClassDates = new HashSet<TrainerClassDate>();
+        }
+
         public int Id { get; set; }
-        [Required]
-        public string Name {get; set;}
-
-        public ICollection<TrainerDate> TrainerDates { get; set; }
-
+        public string Name { get; set; } = null!;
         public int SportFacilityId { get; set; }
+        public string? Introduction { get; set; }
+        public int? UserId { get; set; }
+        public bool IsDeleted { get; set; }
 
-        public SportFacility SportFacility { get; set; }
-
-
+        public virtual SportFacility SportFacility { get; set; } = null!;
+        public virtual User? User { get; set; }
+        public virtual ICollection<TrainerClassDate> TrainerClassDates { get; set; }
     }
 }

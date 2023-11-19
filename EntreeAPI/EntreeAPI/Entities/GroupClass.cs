@@ -1,21 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
 
 namespace EntreeAPI.Entities
 {
-    public class GroupClass
+    public partial class GroupClass
     {
-        [Key]
+        public GroupClass()
+        {
+            GroupClassDates = new HashSet<GroupClassDate>();
+        }
+
         public int Id { get; set; }
-        [Required]
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
+        public string Tickettype { get; set; } = null!;
+        public int SportFacilityId { get; set; }
 
-        public ICollection<GroupClassDate> GroupClassDates { get; set; }
-        public string Tickettype { get; set; }
-
-        public int SportFacilityId { get; set;}
-
-        public SportFacility SportFacility { get; set; }
-
-
+        public virtual SportFacility SportFacility { get; set; } = null!;
+        public virtual ICollection<GroupClassDate> GroupClassDates { get; set; }
     }
 }

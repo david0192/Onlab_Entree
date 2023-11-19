@@ -3,6 +3,7 @@ package com.entree.entreeapp.presentation.checkout
 import android.app.Activity
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.razorpay.Checkout
 import org.json.JSONObject
@@ -14,7 +15,7 @@ fun CheckoutScreen(
     ticketTypeId: Int?,
     amount:Int?,
     navController: NavController,
-    ttvm: TicketTypeViewModel,
+    ttvm: TicketTypeViewModel = hiltViewModel(),
     boughtTicketTypeId:IntWrapper
 ) {
     val amount = amount?.times(100)

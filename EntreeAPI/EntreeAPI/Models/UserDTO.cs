@@ -8,6 +8,9 @@ namespace EntreeAPI.Models
         public string Email { get; set; }
 
         [Required]
-        public string Role { get; set; }
+        public int RoleId { get; set; }
+
+        [Required]
+        public string Uid { get; set; }
     }
 }

@@ -1,21 +1,27 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
 
 namespace EntreeAPI.Entities
 {
-    public class SportFacility
+    public partial class SportFacility
     {
-        [Key]
+        public SportFacility()
+        {
+            Admins = new HashSet<Admin>();
+            Employees = new HashSet<Employee>();
+            TicketTypes = new HashSet<TicketType>();
+            TrainerClasses = new HashSet<TrainerClass>();
+            Trainers = new HashSet<Trainer>();
+        }
+
         public int Id { get; set; }
-        [Required]
-        public string Name { get; set; }
-        
-        [Required]
-        public string Site { get; set; }
+        public string Name { get; set; } = null!;
+        public string Site { get; set; } = null!;
 
-        public ICollection<TicketType> TicketTypes { get; set; }
-        public ICollection<GroupClass> GroupClasses { get; set; }
-
-        public ICollection<Trainer> Trainers { get; set; }
-
+        public virtual ICollection<Admin> Admins { get; set; }
+        public virtual ICollection<Employee> Employees { get; set; }
+        public virtual ICollection<TicketType> TicketTypes { get; set; }
+        public virtual ICollection<TrainerClass> TrainerClasses { get; set; }
+        public virtual ICollection<Trainer> Trainers { get; set; }
     }
 }
