@@ -8,7 +8,7 @@ import retrofit2.http.*
 import java.util.Date
 import java.util.Dictionary
 
-const val BASE_URL = "http://192.168.83.1:7111/api/"
+const val BASE_URL = "http://192.168.0.29:7111/api/"
 
 interface APIService {
     @GET("sportfacilities")
@@ -45,7 +45,16 @@ interface APIService {
     suspend fun getTicketTypeById(@Path("Id")id:Int?, @Path("uid")uid: String?): TicketTypeDetails
 
     @DELETE("ticketType/{id}")
-    suspend fun DeleteTicketType(@Path("id")id:Int?)
+    suspend fun deleteTicketType(@Path("id")id:Int?)
+
+    @GET("trainer/{Id}/{uid}")
+    suspend fun getTrainerById(@Path("Id")id:Int?, @Path("uid")uid: String?): TrainerDetails
+
+    @POST("trainer")
+    suspend fun createOrEditTrainer(@Body trainerDetails: TrainerDetails)
+
+    @DELETE("trainer/{id}")
+    suspend fun deleteTrainer(@Path("id")id:Int?)
 
     companion object {
         var apiService: APIService? = null

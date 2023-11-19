@@ -19,7 +19,7 @@ import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.entree.entreeapp.models.*
 import com.entree.entreeapp.components.TopBar
-import com.entree.entreeapp.enums.TicketTypeDetailNavigateType
+import com.entree.entreeapp.enums.DetailNavigateType
 import com.entree.entreeapp.presentation.profile.ProfileViewModel
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterialApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnrememberedMutableState")
 @Composable
-fun TicketTypeEditDetails(viewModel: ProfileViewModel = hiltViewModel(), avm: AdminSiteViewModel, id:Int?, navigateTypeId:Int?){
+fun TicketTypeEditDetails(viewModel: ProfileViewModel = hiltViewModel(), avm: AdminSiteViewModel=hiltViewModel(), id:Int?, navigateTypeId:Int?){
     var isLoading by remember { mutableStateOf(true) }
     LaunchedEffect(Unit, block = {
         isLoading = true
@@ -92,7 +92,7 @@ fun TicketTypeEditDetails(viewModel: ProfileViewModel = hiltViewModel(), avm: Ad
                                         ticketTypeDetails.name=it
                                     },
                                     modifier=Modifier.fillMaxWidth(),
-                                    readOnly = (navigateTypeId==TicketTypeDetailNavigateType.VIEW.value)
+                                    readOnly = (navigateTypeId==DetailNavigateType.VIEW.value)
                                 )
                                 Spacer(modifier= Modifier.padding(8.dp))
                                 Text(
@@ -102,13 +102,13 @@ fun TicketTypeEditDetails(viewModel: ProfileViewModel = hiltViewModel(), avm: Ad
                                 var expanded by remember { mutableStateOf(false) }
                                 var selectedOptionText by remember { mutableStateOf(ticketTypeDetails.categoryValues.get(ticketTypeDetails.categoryId) ?:"") }
 
-                                if(navigateTypeId==TicketTypeDetailNavigateType.VIEW.value){
+                                if(navigateTypeId==DetailNavigateType.VIEW.value){
                                     TextField(
                                         value = selectedOptionText,
                                         onValueChange = {
                                         },
                                         modifier=Modifier.fillMaxWidth(),
-                                        readOnly = (navigateTypeId==TicketTypeDetailNavigateType.VIEW.value)
+                                        readOnly = (navigateTypeId==DetailNavigateType.VIEW.value)
                                     )
                                 }
                                 else{
@@ -169,7 +169,7 @@ fun TicketTypeEditDetails(viewModel: ProfileViewModel = hiltViewModel(), avm: Ad
                                     },
                                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                                     modifier=Modifier.fillMaxWidth(),
-                                    readOnly = (navigateTypeId==TicketTypeDetailNavigateType.VIEW.value)
+                                    readOnly = (navigateTypeId==DetailNavigateType.VIEW.value)
                                 )
                                 Spacer(modifier= Modifier.padding(8.dp))
                                 Text(
@@ -188,7 +188,7 @@ fun TicketTypeEditDetails(viewModel: ProfileViewModel = hiltViewModel(), avm: Ad
                                     },
                                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                                     modifier=Modifier.fillMaxWidth(),
-                                    readOnly = (navigateTypeId==TicketTypeDetailNavigateType.VIEW.value)
+                                    readOnly = (navigateTypeId==DetailNavigateType.VIEW.value)
                                 )
                                 Spacer(modifier= Modifier.padding(8.dp))
                                 Text(
@@ -207,10 +207,10 @@ fun TicketTypeEditDetails(viewModel: ProfileViewModel = hiltViewModel(), avm: Ad
                                     },
                                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                                     modifier=Modifier.fillMaxWidth(),
-                                    readOnly = (navigateTypeId==TicketTypeDetailNavigateType.VIEW.value)
+                                    readOnly = (navigateTypeId==DetailNavigateType.VIEW.value)
                                 )
                                 Spacer(modifier= Modifier.padding(8.dp))
-                                if(navigateTypeId!=TicketTypeDetailNavigateType.VIEW.value){
+                                if(navigateTypeId!=DetailNavigateType.VIEW.value){
                                     Button(
                                         onClick = {
                                             CoroutineScope(Dispatchers.Default).launch {

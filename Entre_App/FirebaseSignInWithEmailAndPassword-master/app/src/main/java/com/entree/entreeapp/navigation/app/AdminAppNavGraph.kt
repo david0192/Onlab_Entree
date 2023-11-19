@@ -38,9 +38,20 @@ fun AdminSetUpNavGraph(
                 type= NavType.IntType
             })
         ){
-
                 backStackEntry->
             TicketTypeEditDetails(avm=avm, id=backStackEntry.arguments?.getInt("id"), navigateTypeId = backStackEntry.arguments?.getInt("NavigateTypeId"))
+        }
+
+        composable(
+            route=Screen.AdminTrainerDetail.route,
+            arguments= listOf(navArgument("id"){
+                type= NavType.IntType
+            }, navArgument("NavigateTypeId"){
+                type= NavType.IntType
+            })
+        ){
+                backStackEntry->
+            TrainerDetails(avm=avm, id=backStackEntry.arguments?.getInt("id"), navigateTypeId = backStackEntry.arguments?.getInt("NavigateTypeId"))
         }
     }
 }

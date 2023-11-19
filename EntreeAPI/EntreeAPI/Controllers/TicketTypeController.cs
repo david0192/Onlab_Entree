@@ -51,7 +51,7 @@ namespace EntreeAPI.Controllers
           else
           {
             var guestId = guest.Id;
-            var ticketlistquery = await _mapper.ProjectTo<TicketDTO>(_context.Tickets.Include(t => t.TicketType).Where(t => t.GuestId == guestId)).ToListAsync();
+            var ticketlistquery = await _mapper.ProjectTo<TicketDTO>(_context.Tickets.Include(t => t.TicketType).Where(t => t.GuestId == guestId && (t.ExpirationDate == null || t.ExpirationDate > DateTime.Now) && (t.UsageOccasionLeft == null || t.UsageOccasionLeft > 0))).ToListAsync();
             return Ok(ticketlistquery);
           }
         }
@@ -135,20 +135,20 @@ namespace EntreeAPI.Controllers
           }
         }
 
-        if(sportFacilityId == 0)
+        if (sportFacilityId == 0)
         {
           throw new ArgumentException("Edzőteremhez kell tartoznia az Admin felhasználónak!");
         }
         else
         {
           var ticketTypeEmpty = new TicketTypeDetailsDTO();
+          ticketTypeEmpty.SportFacilityId = sportFacilityId;
           var categories = await _context.TicketCategories.ToListAsync();
 
           if (categories is not null)
           {
             foreach (var category in categories)
             {
-              ticketTypeEmpty.SportFacilityId = sportFacilityId;
               ticketTypeEmpty.CategoryValues.Add(category.Id, category.Name);
             }
           }
@@ -173,7 +173,7 @@ namespace EntreeAPI.Controllers
             MaxUsages = ticketTypeDTO.MaxUsages,
             ValidityDays = ticketTypeDTO.ValidityDays,
             SportFascilityId = ticketTypeDTO.SportFacilityId,
-            IsDeleted = 0
+            IsDeleted = false
           });
 
           await _context.SaveChangesAsync();
@@ -211,7 +211,7 @@ namespace EntreeAPI.Controllers
       var ticketType = await _context.TicketTypes.Where(x => x.Id == id).FirstOrDefaultAsync();
       if (ticketType is not null)
       {
-        ticketType.IsDeleted = 1;
+        ticketType.IsDeleted = true;
         await _context.SaveChangesAsync();
       }
     }

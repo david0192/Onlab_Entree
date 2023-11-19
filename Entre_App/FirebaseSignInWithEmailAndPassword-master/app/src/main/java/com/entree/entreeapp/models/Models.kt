@@ -1,5 +1,6 @@
 package com.entree.entreeapp.models
 
+import androidx.compose.runtime.MutableState
 import java.util.*
 
 data class User(
@@ -19,7 +20,7 @@ data class SportFacilityDetails(
     var name: String,
     var site:String,
     var ticketTypes:List<TicketType>,
-    var trainers:List<Trainer>
+    var trainers: List<Trainer>
 )
 
 data class TicketType(
@@ -57,4 +58,11 @@ data class TicketTypeDetails(
     var validityDays: Int?,
     var sportFacilityId:Int,
     var categoryValues:Map<Int, String>
+)
+
+data class TrainerDetails(
+    var id:Int,
+    var name:String,
+    var sportFacilityId:Int,
+    var introduction: String?
 )

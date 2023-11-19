@@ -15,6 +15,7 @@ namespace EntreeAPI.Entities
         public int SportFacilityId { get; set; }
         public string? Introduction { get; set; }
         public int? UserId { get; set; }
+        public bool IsDeleted { get; set; }
 
         public virtual SportFacility SportFacility { get; set; } = null!;
         public virtual User? User { get; set; }

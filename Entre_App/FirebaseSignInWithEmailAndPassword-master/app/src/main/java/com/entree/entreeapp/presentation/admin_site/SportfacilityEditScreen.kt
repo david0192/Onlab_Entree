@@ -23,7 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.entree.entreeapp.R
 import com.entree.entreeapp.components.TopBar
-import com.entree.entreeapp.enums.TicketTypeDetailNavigateType
+import com.entree.entreeapp.enums.DetailNavigateType
 import com.entree.entreeapp.presentation.profile.ProfileViewModel
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
@@ -36,6 +36,7 @@ import com.entree.entreeapp.models.*
 @Composable
 fun SportFacilityEditScreen(viewModel: ProfileViewModel = hiltViewModel(), avm: AdminSiteViewModel = hiltViewModel(), navcontroller: NavController){
     var isLoading by remember { mutableStateOf(true) }
+
     LaunchedEffect(Unit, block = {
         isLoading = true
         avm.getSportFacilityByAdminUid(FirebaseAuth.getInstance().currentUser?.uid)
@@ -126,7 +127,7 @@ fun SportFacilityEditScreen(viewModel: ProfileViewModel = hiltViewModel(), avm: 
                             Spacer(modifier = Modifier.width(15.dp))
                             Button(
                                 onClick = {
-                                    navcontroller.navigate(route = "admin_ticketType_details/"+ 0+"/"+ TicketTypeDetailNavigateType.NEW.value)
+                                    navcontroller.navigate(route = "admin_ticketType_details/"+ 0+"/"+ DetailNavigateType.NEW.value)
                                 },
                                 colors = ButtonDefaults.buttonColors(Color.Black),
                             ) {
@@ -135,7 +136,7 @@ fun SportFacilityEditScreen(viewModel: ProfileViewModel = hiltViewModel(), avm: 
                         }
                         Surface(modifier = Modifier.padding(all = Dp(5f)).weight(1f)) {
                             LazyColumn {
-                                items(avm.sportFacilityDetails.ticketTypes) { ticketType ->
+                                items( avm.sportFacilityDetails.ticketTypes) { ticketType ->
                                     Column {
                                         Row(
                                             modifier = Modifier
@@ -167,18 +168,19 @@ fun SportFacilityEditScreen(viewModel: ProfileViewModel = hiltViewModel(), avm: 
                                                         )
                                                     }
                                                     Spacer(modifier = Modifier.width(25.dp))
-                                                    IconButton(onClick = {navcontroller.navigate(route = "admin_ticketType_details/"+ ticketType.id+"/"+ TicketTypeDetailNavigateType.VIEW.value) }) {
+                                                    IconButton(onClick = {navcontroller.navigate(route = "admin_ticketType_details/"+ ticketType.id+"/"+ DetailNavigateType.VIEW.value) }) {
                                                         Icon(painter = painterResource(R.drawable.baseline_preview_24), contentDescription = "Ticket Icon")
                                                     }
                                                     Spacer(modifier = Modifier.width(25.dp))
 
-                                                    IconButton(onClick = { navcontroller.navigate(route = "admin_ticketType_details/"+ ticketType.id+"/"+ TicketTypeDetailNavigateType.EDIT.value) }) {
+                                                    IconButton(onClick = { navcontroller.navigate(route = "admin_ticketType_details/"+ ticketType.id+"/"+ DetailNavigateType.EDIT.value) }) {
                                                         Icon(painter = painterResource(R.drawable.baseline_edit_24), contentDescription = "Edit Icon")
                                                     }
                                                     Spacer(modifier = Modifier.width(25.dp))
                                                     IconButton(onClick = {
                                                         CoroutineScope(Dispatchers.Default).launch {
-                                                        avm.deleteTicketType(ticketType.id) }
+                                                            avm.deleteTicketType(ticketType.id)
+                                                        }
                                                     }) {
                                                         Icon(painter = painterResource(R.drawable.baseline_delete_24), contentDescription = "Delete Icon")
                                                     }
@@ -200,7 +202,7 @@ fun SportFacilityEditScreen(viewModel: ProfileViewModel = hiltViewModel(), avm: 
                             Spacer(modifier = Modifier.width(15.dp))
                             Button(
                                 onClick = {
-                                    navcontroller.navigate(route = "admin_ticketType_details/"+ null+"/"+ TicketTypeDetailNavigateType.NEW.value)
+                                    navcontroller.navigate(route = "admin_trainer_details/"+ 0+"/"+ DetailNavigateType.NEW.value)
                                 },
                                 colors = ButtonDefaults.buttonColors(Color.Black),
                             ) {
@@ -235,16 +237,20 @@ fun SportFacilityEditScreen(viewModel: ProfileViewModel = hiltViewModel(), avm: 
                                                         )
                                                     }
                                                     Spacer(modifier = Modifier.width(25.dp))
-                                                    IconButton(onClick = { }) {
+                                                    IconButton(onClick = {navcontroller.navigate(route = "admin_trainer_details/"+ trainer.id+"/"+ DetailNavigateType.VIEW.value) }) {
                                                         Icon(painter = painterResource(R.drawable.baseline_preview_24), contentDescription = "Ticket Icon")
                                                     }
                                                     Spacer(modifier = Modifier.width(25.dp))
 
-                                                    IconButton(onClick = {  }) {
+                                                    IconButton(onClick = { navcontroller.navigate(route = "admin_trainer_details/"+ trainer.id+"/"+ DetailNavigateType.EDIT.value) }) {
                                                         Icon(painter = painterResource(R.drawable.baseline_edit_24), contentDescription = "Edit Icon")
                                                     }
                                                     Spacer(modifier = Modifier.width(25.dp))
-                                                    IconButton(onClick = { }) {
+                                                    IconButton(onClick = {
+                                                        CoroutineScope(Dispatchers.Default).launch {
+                                                            avm.deleteTrainer(trainer.id) 
+                                                        }
+                                                    }) {
                                                         Icon(painter = painterResource(R.drawable.baseline_delete_24), contentDescription = "Delete Icon")
                                                     }
                                                 }

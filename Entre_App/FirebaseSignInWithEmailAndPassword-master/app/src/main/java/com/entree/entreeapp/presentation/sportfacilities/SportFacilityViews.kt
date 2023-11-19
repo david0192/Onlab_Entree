@@ -35,9 +35,8 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun SportFacilityView(vm: SportFacilityViewModel,
+fun SportFacilityView(vm: SportFacilityViewModel = hiltViewModel(),
                       navcontroller: NavController, viewModel: ProfileViewModel = hiltViewModel()
-
 ) {
     var isLoading by remember { mutableStateOf(false) }
     var query by remember { mutableStateOf("") }
@@ -176,7 +175,7 @@ fun SportFacilityView(vm: SportFacilityViewModel,
                     }
                 },
                 modifier = Modifier
-                    .padding(32.dp, 48.dp )
+                    .padding(32.dp, 48.dp)
                     .zIndex(2f),
             ) {
                 Icon(Icons.Default.Refresh,contentDescription = "content description", tint = Color.White)
@@ -388,7 +387,7 @@ fun SportFacilityDetails(id:Int?,
                     }
                 },
                 modifier = Modifier
-                    .padding(32.dp, 48.dp )
+                    .padding(32.dp, 48.dp)
                     .zIndex(2f),
             ) {
                 Icon(Icons.Default.Refresh,contentDescription = "content description", tint = Color.White)

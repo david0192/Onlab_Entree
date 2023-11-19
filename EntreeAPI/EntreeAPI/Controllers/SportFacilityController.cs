@@ -36,7 +36,7 @@ namespace EntreeAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TicketTypeDTO>>> GetTicketTypesByIdAndCatId(int id, int catId)
         {
-            var tickettypes = await _mapper.ProjectTo<TicketTypeDTO>(_context.TicketTypes.Where(t => t.SportFascilityId == id && t.CategoryId == catId && t.IsDeleted == 0)).ToListAsync();
+            var tickettypes = await _mapper.ProjectTo<TicketTypeDTO>(_context.TicketTypes.Where(t => t.SportFascilityId == id && t.CategoryId == catId && t.IsDeleted == false)).ToListAsync();
 
             return Ok(tickettypes);
         }
@@ -61,18 +61,6 @@ namespace EntreeAPI.Controllers
 
                         if (sportFacilityDetailsDTO is not null && sportFacilityDetailsDTO.Id != 0)
                         {
-                            var ticketTypes = await _mapper.ProjectTo<TicketTypeDTO>(_context.TicketTypes
-                            .Where(t => t.SportFascilityId == admin.SportFacilityId && t.IsDeleted == 0))
-                            .ToListAsync();
-
-                            if (ticketTypes is not null)
-                            {
-                                foreach (var ticketType in ticketTypes)
-                                {
-                                    sportFacilityDetailsDTO.TicketTypes.Add(ticketType);
-                                }
-                            }
-
                             return Ok(sportFacilityDetailsDTO);
                         }
                         else

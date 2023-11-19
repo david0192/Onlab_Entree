@@ -12,13 +12,13 @@ namespace EntreeAPI.Entities
         }
 
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
         public int Price { get; set; }
         public int SportFascilityId { get; set; }
         public int CategoryId { get; set; }
         public int? MaxUsages { get; set; }
         public int? ValidityDays { get; set; }
-        public int IsDeleted { get; set; }
+        public bool IsDeleted { get; set; }
 
         public virtual TicketCategory Category { get; set; } = null!;
         public virtual SportFacility SportFascility { get; set; } = null!;
