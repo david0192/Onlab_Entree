@@ -116,6 +116,5 @@ namespace EntreeAPI.Controllers
         await _context.SaveChangesAsync();
       }
     }
-
   }
 }
