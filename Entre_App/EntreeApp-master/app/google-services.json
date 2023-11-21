@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "192534507851",
+    "project_id": "entreeauthentication",
+    "storage_bucket": "entreeauthentication.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:192534507851:android:1b716189386fd90bac38ce",
+        "android_client_info": {
+          "package_name": "com.entree.entreeapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "192534507851-svr7rqc31qrjucpk168aaj4sdm6ofks4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgDgT71lzOwejJ6yGMzAr5MRX7YAdeKjc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "192534507851-svr7rqc31qrjucpk168aaj4sdm6ofks4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

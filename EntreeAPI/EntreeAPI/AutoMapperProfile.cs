@@ -10,7 +10,7 @@ namespace EntreeAPI
     {
       CreateMap<User, UserDTO>();
       CreateMap<SportFacility, SportFacilityDTO>();
-      CreateMap<SportFacility, SportFacilityDetailsDTO>().ForMember(d=>d.TicketTypes, d=>d.MapFrom(s => s.TicketTypes.Where(x=>!x.IsDeleted)))
+      CreateMap<SportFacility, SportFacilityDetailsDTO>().ForMember(d => d.TicketTypes, d => d.MapFrom(s => s.TicketTypes.Where(x => !x.IsDeleted)))
         .ForMember(d => d.Trainers, d => d.MapFrom(s => s.Trainers.Where(x => !x.IsDeleted)));
       CreateMap<TicketType, TicketTypeDTO>();
       CreateMap<TicketType, TicketTypeDetailsDTO>();
