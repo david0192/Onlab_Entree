@@ -52,7 +52,6 @@ fun MyProfile(viewModel: ProfileViewModel = hiltViewModel(), ticketTypeViewModel
             )
         },
         content = {
-
             Box(){
                 CreateProfileCard(ticketTypeViewModel=ticketTypeViewModel, navcontroller=navcontroller)
             }

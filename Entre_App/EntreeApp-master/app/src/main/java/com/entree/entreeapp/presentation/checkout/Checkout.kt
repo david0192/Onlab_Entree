@@ -17,12 +17,10 @@ fun CheckoutScreen(
     boughtTicketTypeId:IntWrapper
 ) {
     val amount = amount?.times(100)
-    val orderId = "987439827"
     boughtTicketTypeId.value=ticketTypeId
 
     RazorpayPaymentScreen(
         amount = amount,
-        orderId = orderId,
     )
 }
 
@@ -30,7 +28,6 @@ fun CheckoutScreen(
 @Composable
 fun RazorpayPaymentScreen(
     amount: Int?,
-    orderId: String,
 ) {
     val activity = LocalContext.current as Activity
 
@@ -40,20 +37,15 @@ fun RazorpayPaymentScreen(
 
         val data = JSONObject()
         data.put("amount", amount)
-        data.put("name", "My Store")
-        data.put("description", "Payment for Order #$orderId")
-        //data.put("order_id", orderId)
+        data.put("name", "Entree")
+        data.put("description", "Payment for Order")
+        data.put("description", "Payment for Order")
         data.put("currency", "HUF")
         data.put("prefill.contact", "9999999999")
         data.put("prefill.email", "test@test.com")
 
-
-
         razorpay.open(activity, data)
 
-        onDispose {
-
-        }
-
+        onDispose {}
     }
 }

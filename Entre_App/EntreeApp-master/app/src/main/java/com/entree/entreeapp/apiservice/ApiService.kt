@@ -8,7 +8,7 @@ import retrofit2.http.*
 import java.util.Date
 import java.util.Dictionary
 
-const val BASE_URL = "http://192.168.0.29:7111/api/"
+const val BASE_URL = "http://192.168.83.1:7111/api/"
 
 interface APIService {
     @GET("sportfacilities")

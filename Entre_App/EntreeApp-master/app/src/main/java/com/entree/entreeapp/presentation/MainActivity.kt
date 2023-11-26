@@ -39,7 +39,6 @@ class MainActivity : ComponentActivity(), PaymentResultListener {
     private val viewModel by viewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         setContent {
             navController = rememberAnimatedNavController()
@@ -81,13 +80,13 @@ class MainActivity : ComponentActivity(), PaymentResultListener {
                 else{
                     when (roleId) {
                         Roles.GUEST.value-> {
-                            NavigateToProfileScreen()
+                            NavigateToGuestScreen()
                         }
                         Roles.ADMIN.value -> {
                             NavigateToAdminScreen()
                         }
                         else -> {
-                            NavigateToProfileScreen()
+                            NavigateToGuestScreen()
                         }
                     }
                 }
@@ -106,7 +105,7 @@ class MainActivity : ComponentActivity(), PaymentResultListener {
 
     @SuppressLint("CoroutineCreationDuringComposition")
     @Composable
-    private fun NavigateToProfileScreen() = navController.navigate(ProfileScreen.route) {
+    private fun NavigateToGuestScreen() = navController.navigate(GuestScreen.route) {
         popUpTo(navController.graph.id) {
             inclusive = true
         }
@@ -129,11 +128,11 @@ class MainActivity : ComponentActivity(), PaymentResultListener {
 
     override fun onPaymentSuccess(p0: String?) {
         ttvm.addTicketToUser(boughtTicketTypeId.value, uid = FirebaseAuth.getInstance().currentUser?.uid)
-        navController.navigate(ProfileScreen.route)
+        navController.navigate(GuestScreen.route)
     }
 
     override fun onPaymentError(p0: Int, p1: String?) {
-        navController.navigate(ProfileScreen.route)
+        navController.navigate(GuestScreen.route)
     }
 }
 

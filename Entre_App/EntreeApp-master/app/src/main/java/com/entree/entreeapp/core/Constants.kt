@@ -8,15 +8,15 @@ object Constants {
     const val SIGN_IN = "Sign in"
     const val RESET_PASSWORD = "Reset"
     const val SIGN_UP = "Sign up"
-    const val SIGN_OUT = "Sign out"
-    const val REVOKE_ACCESS = "Revoke Access"
+    const val SIGN_OUT = "Kijelentkezés"
+    const val REVOKE_ACCESS = "Hozzáférés visszavonása"
 
     //Screens
     const val SIGN_IN_SCREEN = "Sign in"
     const val FORGOT_PASSWORD_SCREEN = "Forgot password"
     const val SIGN_UP_SCREEN = "Sign up"
     const val VERIFY_EMAIL_SCREEN = "Verify email"
-    const val PROFILE_SCREEN = "Profile"
+    const val GUEST_SCREEN = "Guest"
     const val ADMIN_SCREEN = "Admin"
     const val START_SCREEN = "StartScreen"
 
