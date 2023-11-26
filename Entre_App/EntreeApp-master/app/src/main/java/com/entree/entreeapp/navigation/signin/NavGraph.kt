@@ -87,25 +87,21 @@ fun NavGraph(
             VerifyEmailScreen(
                 navigateToProfileScreen = {
                     val adduser: User = User(email=FirebaseAuth.getInstance().currentUser?.email , roleId= Roles.GUEST.value, uid=FirebaseAuth.getInstance().currentUser?.uid)
-
                     CoroutineScope(Dispatchers.Default).launch {
                         uvm.addGuestUser(adduser)
                         if(uvm.errorMessage.isEmpty()){
-                            navController.navigate(ProfileScreen.route) {
+                            navController.navigate(GuestScreen.route) {
                                 popUpTo(navController.graph.id) {
                                     inclusive = true
                                 }
                             }
-                        }
-                        else{
-                            //Todo: Navigate to unsuccessfull sign up
                         }
                     }
                 }
             )
         }
         composable(
-            route = ProfileScreen.route
+            route = GuestScreen.route
         ) {
             HomeScreen(navcontroller = rememberNavController(), boughtTicketTypeId=boughtTicketTypeId)
         }

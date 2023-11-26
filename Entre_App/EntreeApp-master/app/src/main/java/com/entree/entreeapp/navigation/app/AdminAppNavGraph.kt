@@ -50,7 +50,7 @@ fun AdminSetUpNavGraph(
             })
         ){
                 backStackEntry->
-            TrainerDetails(id=backStackEntry.arguments?.getInt("id"), navigateTypeId = backStackEntry.arguments?.getInt("NavigateTypeId"))
+            TrainerEditDetails(id=backStackEntry.arguments?.getInt("id"), navigateTypeId = backStackEntry.arguments?.getInt("NavigateTypeId"))
         }
     }
 }

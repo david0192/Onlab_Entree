@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnrememberedMutableState")
 @Composable
-fun TrainerDetails(viewModel: ProfileViewModel = hiltViewModel(), avm: AdminSiteViewModel = hiltViewModel(), id:Int?, navigateTypeId:Int?){
+fun TrainerEditDetails(viewModel: ProfileViewModel = hiltViewModel(), avm: AdminSiteViewModel = hiltViewModel(), id:Int?, navigateTypeId:Int?){
     var isLoading by remember { mutableStateOf(true) }
     LaunchedEffect(Unit, block = {
         isLoading = true
