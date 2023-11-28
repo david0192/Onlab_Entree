@@ -144,7 +144,7 @@ fun SportFacilityView(vm: SportFacilityViewModel = hiltViewModel(),
                                                     Text(
                                                         text = "Megnézem",
                                                         color = Color.White,
-                                                        fontSize = 10.sp
+                                                        fontSize = 8.sp
                                                     );
                                                 }
                                             }
